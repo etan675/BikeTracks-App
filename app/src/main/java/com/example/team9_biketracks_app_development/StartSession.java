@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,18 +26,21 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
 
     private SensorManager sensorManager;
     private Sensor accelerometer, mGyro, mMagno, mLight, mPressure, mTemp, mHumidity;
-    TextView xValue, yValue, zValue, xGValue, yGValue, zGValue, xMValue, yMValue, zMValue, light, pressure, temp, humidity;
+    EditText xValue, yValue, zValue, xGValue, yGValue, zGValue, xMValue, yMValue, zMValue, light, pressure, temp, humidity;
 
     private Chronometer mChronometer;
     private long pauseOffset;
     boolean active;
 
-    private FileWriter writer;
+    DBHelper myDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+        //Initialising Database
+        myDb = new DBHelper(this);
 
         mChronometer= (Chronometer) findViewById(R.id.chronometer);
         mChronometer.setFormat("Time: %s");
@@ -53,25 +57,25 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
         });
 
         //Setting Acc values
-        xValue = (TextView) findViewById(R.id.xValue);
-        yValue = (TextView) findViewById(R.id.yValue);
-        zValue = (TextView) findViewById(R.id.zValue);
+        xValue = (EditText) findViewById(R.id.xValue);
+        yValue = (EditText) findViewById(R.id.yValue);
+        zValue = (EditText) findViewById(R.id.zValue);
 
         //Setting Gyro values
-        xGValue = (TextView) findViewById(R.id.xGValue);
-        yGValue = (TextView) findViewById(R.id.yGValue);
-        zGValue = (TextView) findViewById(R.id.zGValue);
+        xGValue = (EditText) findViewById(R.id.xGValue);
+        yGValue = (EditText) findViewById(R.id.yGValue);
+        zGValue = (EditText) findViewById(R.id.zGValue);
 
         //Setting Magno values
-        xMValue = (TextView) findViewById(R.id.xMValue);
-        yMValue = (TextView) findViewById(R.id.yMValue);
-        zMValue = (TextView) findViewById(R.id.zMValue);
+        xMValue = (EditText) findViewById(R.id.xMValue);
+        yMValue = (EditText) findViewById(R.id.yMValue);
+        zMValue = (EditText) findViewById(R.id.zMValue);
 
         //setting other values
-        light = (TextView) findViewById(R.id.light);
-        pressure = (TextView) findViewById(R.id.pressure);
-        temp = (TextView) findViewById(R.id.temp);
-        humidity = (TextView) findViewById(R.id.humidity);
+        light = (EditText) findViewById(R.id.light);
+        pressure = (EditText) findViewById(R.id.pressure);
+        temp = (EditText) findViewById(R.id.temp);
+        humidity = (EditText) findViewById(R.id.humidity);
 
         Log.d(TAG, "onCreate: Initializing Sensor Services");
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -181,26 +185,43 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
         Sensor sensor = sensorEvent.sensor;
         Log.d(TAG, "Setting Output variables");
         if(sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            xValue.setText("X: " + sensorEvent.values[0]);
-            yValue.setText("Y: " + sensorEvent.values[1]);
-            zValue.setText("Z: " + sensorEvent.values[2]);
+            Log.d(TAG, "ACCELEROMETER onSensorChanged: X: " + sensorEvent.values[0] + ", Y: " + sensorEvent.values[1] + ", Z: " + sensorEvent.values[2]);
+            xValue.setText(String.valueOf(sensorEvent.values[0]));
+            yValue.setText(String.valueOf(sensorEvent.values[1]));
+            zValue.setText(String.valueOf(sensorEvent.values[2]));
         } else if(sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+            Log.d(TAG, "GYROSCOPE onSensorChanged: X: " + sensorEvent.values[0] + ", Y: " + sensorEvent.values[1] + ", Z: " + sensorEvent.values[2]);
             xGValue.setText("X: " + sensorEvent.values[0]);
             yGValue.setText("Y: " + sensorEvent.values[1]);
             zGValue.setText("Z: " + sensorEvent.values[2]);
         } else if(sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+            Log.d(TAG, "MAGNETIC FIELD onSensorChanged: X: " + sensorEvent.values[0] + ", Y: " + sensorEvent.values[1] + ", Z: " + sensorEvent.values[2]);
             xMValue.setText("X: " + sensorEvent.values[0]);
             yMValue.setText("Y: " + sensorEvent.values[1]);
             zMValue.setText("Z: " + sensorEvent.values[2]);
         } else if(sensor.getType() == Sensor.TYPE_LIGHT) {
+            Log.d(TAG, "LIGHT onSensorChanged: X: " + sensorEvent.values[0]);
             light.setText("Light: " + sensorEvent.values[0]);
         } else if(sensor.getType() == Sensor.TYPE_PRESSURE) {
+            Log.d(TAG, "PRESSURE onSensorChanged: X: " + sensorEvent.values[0]);
             pressure.setText("Pressure: " + sensorEvent.values[0]);
         } else if(sensor.getType() == Sensor.TYPE_AMBIENT_TEMPERATURE) {
+            Log.d(TAG, "TEMPERATURE onSensorChanged: X: " + sensorEvent.values[0]);
             temp.setText("Temperature: " + sensorEvent.values[0]);
         } else if(sensor.getType() == Sensor.TYPE_RELATIVE_HUMIDITY) {
+            Log.d(TAG, "HUMIDITY onSensorChanged: X: " + sensorEvent.values[0]);
             humidity.setText("Humidity: " + sensorEvent.values[0]);
         }
+
+/*
+        myDb.insertSensors(Float.parseFloat(xValue.getText().toString()), Float.parseFloat(yValue.getText().toString()), Float.parseFloat(zValue.getText().toString()),
+                Float.parseFloat(xGValue.getText().toString()), Float.parseFloat(yGValue.getText().toString()), Float.parseFloat(zGValue.getText().toString()),
+                Float.parseFloat(xMValue.getText().toString()), Float.parseFloat(yMValue.getText().toString()), Float.parseFloat(zMValue.getText().toString()),
+                Float.parseFloat(light.getText().toString()), Float.parseFloat(pressure.getText().toString()), Float.parseFloat(temp.getText().toString()),
+                Float.parseFloat(humidity.getText().toString()));
+*/
+
+        myDb.insertAccSensors(Float.parseFloat(xValue.getText().toString()), Float.parseFloat(yValue.getText().toString()), Float.parseFloat(zValue.getText().toString()));
     }
 
     public void toggle(View v) {

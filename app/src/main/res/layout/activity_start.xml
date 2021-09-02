@@ -27,17 +27,17 @@
         android:layout_marginTop="10sp"
         android:layout_below="@+id/acc">
 
-        <TextView
+        <EditText
             android:layout_width="115sp"
             android:layout_height="wrap_content"
             android:id="@+id/xValue" />
 
-        <TextView
+        <EditText
             android:layout_width="115sp"
             android:layout_height="wrap_content"
             android:id="@+id/yValue" />
 
-        <TextView
+        <EditText
             android:layout_width="115sp"
             android:layout_height="wrap_content"
             android:id="@+id/zValue" />
@@ -59,17 +59,17 @@
         android:layout_below="@+id/gyro"
         android:layout_marginTop="10sp">
 
-        <TextView
+        <EditText
             android:layout_width="115sp"
             android:layout_height="wrap_content"
             android:id="@+id/xGValue" />
 
-        <TextView
+        <EditText
             android:layout_width="115sp"
             android:layout_height="wrap_content"
             android:id="@+id/yGValue" />
 
-        <TextView
+        <EditText
             android:layout_width="115sp"
             android:layout_height="wrap_content"
             android:id="@+id/zGValue" />
@@ -91,17 +91,17 @@
         android:layout_below="@+id/mag"
         android:layout_marginTop="10sp">
 
-        <TextView
+        <EditText
             android:layout_width="115sp"
             android:layout_height="wrap_content"
             android:id="@+id/xMValue" />
 
-        <TextView
+        <EditText
             android:layout_width="115sp"
             android:layout_height="wrap_content"
             android:id="@+id/yMValue" />
 
-        <TextView
+        <EditText
             android:layout_width="115sp"
             android:layout_height="wrap_content"
             android:id="@+id/zMValue" />
@@ -115,24 +115,24 @@
         android:layout_below="@+id/thirdLayout"
         android:layout_marginTop="20sp">
 
-        <TextView
+        <EditText
             android:id="@+id/light"
             android:layout_width="200sp"
             android:layout_height="wrap_content" />
 
-        <TextView
+        <EditText
             android:layout_width="200sp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
             android:id="@+id/pressure" />
 
-        <TextView
+        <EditText
             android:layout_width="200sp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
             android:id="@+id/temp" />
 
-        <TextView
+        <EditText
             android:layout_width="200sp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
