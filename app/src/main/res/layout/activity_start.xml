@@ -28,19 +28,23 @@
         android:layout_below="@+id/acc">
 
         <EditText
+            android:id="@+id/xValue"
             android:layout_width="115sp"
             android:layout_height="wrap_content"
-            android:id="@+id/xValue" />
+            tools:ignore="TouchTargetSizeCheck"
+            android:inputType="numberDecimal" />
 
         <EditText
             android:layout_width="115sp"
             android:layout_height="wrap_content"
-            android:id="@+id/yValue" />
+            android:id="@+id/yValue"
+            android:inputType="numberDecimal" />
 
         <EditText
             android:layout_width="115sp"
             android:layout_height="wrap_content"
-            android:id="@+id/zValue" />
+            android:id="@+id/zValue"
+            android:inputType="numberDecimal" />
     </LinearLayout>
 
     <TextView
@@ -163,8 +167,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/pauseButton"
         android:layout_centerHorizontal="true"
-        android:text="Stop Session"
-        android:onClick="stopChronometer"/>
+        android:onClick="stopChronometer"
+        android:text="Stop Session" />
 
 
 

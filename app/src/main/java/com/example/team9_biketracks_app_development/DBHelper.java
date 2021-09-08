@@ -14,7 +14,10 @@ import android.widget.TextView;
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "BikeTracks.db";
-    public static final String TABLE_NAME = "Sensors";
+    public static final String ACC_TABLE_NAME = "Accelerometer";
+    public static final String GYRO_TABLE_NAME = "Gyroscope";
+    public static final String MAG_TABLE_NAME = "MagneticField";
+
     public static final String COLUMN_ID = "id";
     public static final String COL_2 = "Acc_X";
     public static final String COL_3 = "Acc_Y";
@@ -25,12 +28,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COL_8 = "Mag_X";
     public static final String COL_9 = "Mag_y";
     public static final String COL_10 = "Mag_Z";
-    public static final String COL_11 = "Light";
-    public static final String COL_12 = "Pressure";
-    public static final String COL_13 = "Temperature";
-    public static final String COL_14 = "Humidity";
 
-    private HashMap hp;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME , null, 1);
@@ -39,40 +37,30 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(
-                "create table " + TABLE_NAME +
-                        "(id integer primary key, Acc_X float, Acc_Y float,Acc_Z float, Gyro_X float,Gyro_Y float," +
-                        "Gyro_Z float, Mag_X float, Mag_Y float, Mag_Z float, Light float, Pressure float, Temperature float, Humidity float)"
+                "create table " + ACC_TABLE_NAME +
+                        "(id integer primary key, Acc_X float, Acc_Y float,Acc_Z float)"
+        );
+
+        db.execSQL(
+                "create table " + GYRO_TABLE_NAME +
+                        "(id integer primary key, Gyro_X float, Gyro_Y float, Gyro_Z float)"
+        );
+
+        db.execSQL(
+                "create table " + MAG_TABLE_NAME +
+                        "(id integer primary key, Mag_X float, Mag_Y float,Mag_Z float)"
         );
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + ACC_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + GYRO_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + MAG_TABLE_NAME);
         onCreate(db);
     }
 
-    public boolean insertSensors (float Acc_x, float Acc_y, float Acc_z, float Gyro_X, float Gyro_Y, float Gyro_Z,
-                                  float Mag_X, float Mag_Y, float Mag_Z, float light, float pressure, float temperature, float humidity){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_2, Acc_x);
-        contentValues.put(COL_3, Acc_y);
-        contentValues.put(COL_4, Acc_z);
-        contentValues.put(COL_5, Gyro_X);
-        contentValues.put(COL_6, Gyro_Y);
-        contentValues.put(COL_7, Gyro_Z);
-        contentValues.put(COL_8, Mag_X);
-        contentValues.put(COL_9, Mag_Y);
-        contentValues.put(COL_10, Mag_Z);
-        contentValues.put(COL_11, light);
-        contentValues.put(COL_12, pressure);
-        contentValues.put(COL_13, temperature);
-        contentValues.put(COL_14, humidity);
-
-        db.insert(TABLE_NAME, null, contentValues);
-        return true;
-    }
-
+    //Insert data into Accelerometer Table
     public boolean insertAccSensors (float Acc_x, float Acc_y, float Acc_z){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -80,28 +68,50 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(COL_3, Acc_y);
         contentValues.put(COL_4, Acc_z);
 
-        db.insert(TABLE_NAME, null, contentValues);
+        db.insert(ACC_TABLE_NAME, null, contentValues);
         return true;
     }
 
-    public Cursor getData(int id) {
+    //Insert data into Gyroscope Table
+    public boolean insertGyroSensors (float Gyro_X, float Gyro_Y, float Gyro_Z){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_5, Gyro_X);
+        contentValues.put(COL_6, Gyro_Y);
+        contentValues.put(COL_7, Gyro_Z);
+        db.insert(GYRO_TABLE_NAME, null, contentValues);
+        return true;
+    }
+
+    //Insert data into MagneticField Table
+    public boolean insertMagSensors (float Mag_X, float Mag_Y, float Mag_Z){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_8, Mag_X);
+        contentValues.put(COL_9, Mag_Y);
+        contentValues.put(COL_10, Mag_Z);
+        db.insert(MAG_TABLE_NAME, null, contentValues);
+        return true;
+    }
+
+    public Cursor getAccData(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from " + TABLE_NAME + " where id="+id+"", null );
+        Cursor res =  db.rawQuery( "select * from " + ACC_TABLE_NAME + " where id="+id+"", null );
         return res;
     }
 
-    public int numberOfRows(){
+    public int numberOfAccRows(){
         SQLiteDatabase db = this.getReadableDatabase();
-        int numRows = (int) DatabaseUtils.queryNumEntries(db, TABLE_NAME);
+        int numRows = (int) DatabaseUtils.queryNumEntries(db, ACC_TABLE_NAME);
         return numRows;
     }
 
-    public ArrayList<String> getAllData() {
+    public ArrayList<String> getAllAccData() {
         ArrayList<String> array_list = new ArrayList<String>();
 
         //hp = new HashMap();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from " + TABLE_NAME, null );
+        Cursor res =  db.rawQuery( "select * from " + ACC_TABLE_NAME, null );
         res.moveToFirst();
 
         while(res.isAfterLast() == false){

@@ -19,14 +19,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.FileWriter;
+import java.io.IOException;
 
 public class StartSession extends AppCompatActivity implements SensorEventListener {
 
     private static final String TAG = "StartSession";
 
     private SensorManager sensorManager;
-    private Sensor accelerometer, mGyro, mMagno, mLight, mPressure, mTemp, mHumidity;
-    EditText xValue, yValue, zValue, xGValue, yGValue, zGValue, xMValue, yMValue, zMValue, light, pressure, temp, humidity;
+    private Sensor accelerometer, mGyro, mMagno;
+    EditText xValue, yValue, zValue, xGValue, yGValue, zGValue, xMValue, yMValue, zMValue;
+    float xAccValue, yAccValue, zAccValue, xGyroValue, yGyroValue, zGyroValue, xMagValue, yMagValue, zMagValue;
 
     private Chronometer mChronometer;
     private long pauseOffset;
@@ -71,12 +73,6 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
         yMValue = (EditText) findViewById(R.id.yMValue);
         zMValue = (EditText) findViewById(R.id.zMValue);
 
-        //setting other values
-        light = (EditText) findViewById(R.id.light);
-        pressure = (EditText) findViewById(R.id.pressure);
-        temp = (EditText) findViewById(R.id.temp);
-        humidity = (EditText) findViewById(R.id.humidity);
-
         Log.d(TAG, "onCreate: Initializing Sensor Services");
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
@@ -84,10 +80,6 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mGyro = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         mMagno = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        mLight = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-        mPressure =  sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE);
-        mTemp = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
-        mHumidity = sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY);
 
         //Output Sensor Data
         if (accelerometer != null) {
@@ -95,9 +87,6 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
             Log.d(TAG, "onCreate: Registered accelerometer Listener");
         } else {
             Log.d(TAG, "Accelerometer Not Supported");
-            xValue.setText("Accelerometer Not Supported");
-            yValue.setText("Accelerometer Not Supported");
-            zValue.setText("Accelerometer Not Supported");
         }
 
         if (mGyro != null) {
@@ -105,9 +94,6 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
             Log.d(TAG, "onCreate: Registered Gyro Listener");
         } else {
             Log.d(TAG, "Gyro not supported");
-            xGValue.setText("Gyroscope Not Supported");
-            yGValue.setText("Gyroscope Not Supported");
-            zGValue.setText("Gyroscope Not Supported");
         }
 
         if (mMagno != null) {
@@ -115,45 +101,10 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
             Log.d(TAG, "onCreate: Registered Magno Listener");
         } else {
             Log.d(TAG, "Magno Not Supported");
-            xMValue.setText("Magno Not Supported");
-            yMValue.setText("Magno Not Supported");
-            zMValue.setText("Magno Not Supported");
-        }
-
-        if (mLight != null) {
-            sensorManager.registerListener(StartSession.this, mLight, SensorManager.SENSOR_DELAY_NORMAL);
-            Log.d(TAG, "onCreate: Registered LightSensor Listener");
-        } else {
-            Log.d(TAG, "Light Sensor Not Supported");
-            light.setText("Light Sensor Not Supported");
-        }
-
-        if (mPressure != null) {
-            sensorManager.registerListener(StartSession.this, mPressure, SensorManager.SENSOR_DELAY_NORMAL);
-            Log.d(TAG, "onCreate: Registered PressureSensor Listener");
-        } else {
-            Log.d(TAG, "Pressure Sensor Not Supported");
-            pressure.setText("Pressure Sensor Not Supported");
-        }
-
-        if (mTemp != null) {
-            sensorManager.registerListener(StartSession.this, mTemp, SensorManager.SENSOR_DELAY_NORMAL);
-            Log.d(TAG, "onCreate: Registered TempSensor Listener");
-        } else {
-            Log.d(TAG, "Temp Sensor Not Supported");
-            temp.setText("Temp Sensor Not Supported");
-        }
-
-        if (mHumidity != null) {
-            sensorManager.registerListener(StartSession.this, mHumidity, SensorManager.SENSOR_DELAY_NORMAL);
-            Log.d(TAG, "onCreate: Registered Humidity Sensor Listener");
-        } else {
-            Log.d(TAG, "Humidity Sensor Not Supported");
-            humidity.setText("Humidity Sensor Not Supported");
         }
     }
 
-    public void startChronometer(View v){
+    public void startChronometer(View v) throws IOException {
         if (!active){
             mChronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
             mChronometer.start();
@@ -161,7 +112,7 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
         }
     }
 
-    public void pauseChronometer(View v){
+    public void pauseChronometer(View v) throws IOException {
         if (active){
             mChronometer.stop();
             pauseOffset = SystemClock.elapsedRealtime() - mChronometer.getBase();
@@ -186,42 +137,34 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
         Log.d(TAG, "Setting Output variables");
         if(sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             Log.d(TAG, "ACCELEROMETER onSensorChanged: X: " + sensorEvent.values[0] + ", Y: " + sensorEvent.values[1] + ", Z: " + sensorEvent.values[2]);
+            xAccValue = sensorEvent.values[0];
+            yAccValue = sensorEvent.values[1];
+            zAccValue = sensorEvent.values[2];
             xValue.setText(String.valueOf(sensorEvent.values[0]));
             yValue.setText(String.valueOf(sensorEvent.values[1]));
             zValue.setText(String.valueOf(sensorEvent.values[2]));
-        } else if(sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+            myDb.insertAccSensors(xAccValue, yAccValue, zAccValue);
+        } if(sensor.getType() == Sensor.TYPE_GYROSCOPE) {
             Log.d(TAG, "GYROSCOPE onSensorChanged: X: " + sensorEvent.values[0] + ", Y: " + sensorEvent.values[1] + ", Z: " + sensorEvent.values[2]);
-            xGValue.setText("X: " + sensorEvent.values[0]);
-            yGValue.setText("Y: " + sensorEvent.values[1]);
-            zGValue.setText("Z: " + sensorEvent.values[2]);
-        } else if(sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+            xGyroValue = sensorEvent.values[0];
+            yGyroValue = sensorEvent.values[1];
+            zGyroValue = sensorEvent.values[2];
+            xGValue.setText(String.valueOf(sensorEvent.values[0]));
+            yGValue.setText(String.valueOf(sensorEvent.values[1]));
+            zGValue.setText(String.valueOf(sensorEvent.values[2]));
+            myDb.insertGyroSensors(xGyroValue, yGyroValue, zGyroValue);
+        } if(sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
             Log.d(TAG, "MAGNETIC FIELD onSensorChanged: X: " + sensorEvent.values[0] + ", Y: " + sensorEvent.values[1] + ", Z: " + sensorEvent.values[2]);
-            xMValue.setText("X: " + sensorEvent.values[0]);
-            yMValue.setText("Y: " + sensorEvent.values[1]);
-            zMValue.setText("Z: " + sensorEvent.values[2]);
-        } else if(sensor.getType() == Sensor.TYPE_LIGHT) {
-            Log.d(TAG, "LIGHT onSensorChanged: X: " + sensorEvent.values[0]);
-            light.setText("Light: " + sensorEvent.values[0]);
-        } else if(sensor.getType() == Sensor.TYPE_PRESSURE) {
-            Log.d(TAG, "PRESSURE onSensorChanged: X: " + sensorEvent.values[0]);
-            pressure.setText("Pressure: " + sensorEvent.values[0]);
-        } else if(sensor.getType() == Sensor.TYPE_AMBIENT_TEMPERATURE) {
-            Log.d(TAG, "TEMPERATURE onSensorChanged: X: " + sensorEvent.values[0]);
-            temp.setText("Temperature: " + sensorEvent.values[0]);
-        } else if(sensor.getType() == Sensor.TYPE_RELATIVE_HUMIDITY) {
-            Log.d(TAG, "HUMIDITY onSensorChanged: X: " + sensorEvent.values[0]);
-            humidity.setText("Humidity: " + sensorEvent.values[0]);
+            xMagValue = sensorEvent.values[0];
+            yMagValue = sensorEvent.values[1];
+            zMagValue = sensorEvent.values[2];
+            xMValue.setText(String.valueOf(sensorEvent.values[0]));
+            yMValue.setText(String.valueOf(sensorEvent.values[1]));
+            zMValue.setText(String.valueOf(sensorEvent.values[2]));
+            myDb.insertMagSensors(xMagValue, yMagValue, zMagValue);
+
         }
 
-/*
-        myDb.insertSensors(Float.parseFloat(xValue.getText().toString()), Float.parseFloat(yValue.getText().toString()), Float.parseFloat(zValue.getText().toString()),
-                Float.parseFloat(xGValue.getText().toString()), Float.parseFloat(yGValue.getText().toString()), Float.parseFloat(zGValue.getText().toString()),
-                Float.parseFloat(xMValue.getText().toString()), Float.parseFloat(yMValue.getText().toString()), Float.parseFloat(zMValue.getText().toString()),
-                Float.parseFloat(light.getText().toString()), Float.parseFloat(pressure.getText().toString()), Float.parseFloat(temp.getText().toString()),
-                Float.parseFloat(humidity.getText().toString()));
-*/
-
-        myDb.insertAccSensors(Float.parseFloat(xValue.getText().toString()), Float.parseFloat(yValue.getText().toString()), Float.parseFloat(zValue.getText().toString()));
     }
 
     public void toggle(View v) {
