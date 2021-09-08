@@ -114,62 +114,41 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:id="@+id/fourthLayout"
         android:layout_below="@+id/thirdLayout"
         android:layout_marginTop="20sp">
-
-        <EditText
-            android:id="@+id/light"
-            android:layout_width="200sp"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:layout_width="200sp"
+        <Button
+            android:id="@+id/pauseButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20sp"
-            android:id="@+id/pressure" />
+            android:layout_marginLeft="20sp"
+            android:text="Pause"
+            android:onClick="pauseChronometer"/>
 
-        <EditText
-            android:layout_width="200sp"
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20sp"
-            android:id="@+id/temp" />
+            android:layout_marginLeft="20sp"
+            android:text="Start"
+            android:onClick="startChronometer"/>
 
-        <EditText
-            android:layout_width="200sp"
+        <Button
+            android:id="@+id/stopButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20sp"
-            android:id="@+id/humidity" />
+            android:layout_marginLeft="20sp"
+            android:text="Stop Session" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/pauseButton"
+        android:id="@+id/finishSessionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pause"
+        android:layout_marginTop="20sp"
         android:layout_below="@id/fourthLayout"
-        android:layout_marginStart="250dp"
-        android:onClick="pauseChronometer"/>
-
-    <Button
-        android:id="@+id/startButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/fourthLayout"
-        android:layout_marginStart="70dp"
-        android:text="Start"
-        android:onClick="startChronometer"/>
-
-    <Button
-        android:id="@+id/stopButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/pauseButton"
-        android:layout_centerHorizontal="true"
-        android:onClick="stopChronometer"
-        android:text="Stop Session" />
-
-
+        android:layout_marginLeft="20sp"
+        android:text="Finish Session" />
 
 </RelativeLayout>

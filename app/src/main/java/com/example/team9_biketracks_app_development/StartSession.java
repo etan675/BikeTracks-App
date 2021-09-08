@@ -33,9 +33,9 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
     private Chronometer mChronometer;
     private long pauseOffset;
     boolean active;
+    Button finishSessionButton;
 
     DBHelper myDb;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +81,7 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
         mGyro = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         mMagno = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
-        //Output Sensor Data
+        //Register all available sensors
         if (accelerometer != null) {
             sensorManager.registerListener(StartSession.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
             Log.d(TAG, "onCreate: Registered accelerometer Listener");
@@ -102,6 +102,16 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
         } else {
             Log.d(TAG, "Magno Not Supported");
         }
+
+        // finish Session Button
+        finishSessionButton = (Button) findViewById(R.id.finishSessionButton);
+        finishSessionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                endSensor();
+                finish();
+            }
+        });
     }
 
     public void startChronometer(View v) throws IOException {
@@ -125,12 +135,12 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
         pauseOffset = 0;
     }
 
-
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
     }
 
+    //Get Sensor Data When Changed
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor sensor = sensorEvent.sensor;
@@ -144,7 +154,8 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
             yValue.setText(String.valueOf(sensorEvent.values[1]));
             zValue.setText(String.valueOf(sensorEvent.values[2]));
             myDb.insertAccSensors(xAccValue, yAccValue, zAccValue);
-        } if(sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+        }
+        if(sensor.getType() == Sensor.TYPE_GYROSCOPE) {
             Log.d(TAG, "GYROSCOPE onSensorChanged: X: " + sensorEvent.values[0] + ", Y: " + sensorEvent.values[1] + ", Z: " + sensorEvent.values[2]);
             xGyroValue = sensorEvent.values[0];
             yGyroValue = sensorEvent.values[1];
@@ -153,7 +164,8 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
             yGValue.setText(String.valueOf(sensorEvent.values[1]));
             zGValue.setText(String.valueOf(sensorEvent.values[2]));
             myDb.insertGyroSensors(xGyroValue, yGyroValue, zGyroValue);
-        } if(sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+        }
+        if(sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
             Log.d(TAG, "MAGNETIC FIELD onSensorChanged: X: " + sensorEvent.values[0] + ", Y: " + sensorEvent.values[1] + ", Z: " + sensorEvent.values[2]);
             xMagValue = sensorEvent.values[0];
             yMagValue = sensorEvent.values[1];
@@ -162,15 +174,11 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
             yMValue.setText(String.valueOf(sensorEvent.values[1]));
             zMValue.setText(String.valueOf(sensorEvent.values[2]));
             myDb.insertMagSensors(xMagValue, yMagValue, zMagValue);
-
         }
-
     }
 
-    public void toggle(View v) {
-        v.setEnabled(false);
-        Log.d("success", "Button Disabled");
+    public void endSensor() {
+        sensorManager.unregisterListener(this);
     }
-
 }
 

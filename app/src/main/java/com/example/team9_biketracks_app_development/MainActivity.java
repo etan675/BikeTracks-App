@@ -5,13 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-
+    Intent sessionIntent;
     private Button startSessionButton;
 
     @Override
@@ -23,10 +24,14 @@ public class MainActivity extends AppCompatActivity {
         startSessionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), StartSession.class);
-                view.getContext().startActivity(intent);
+                openStartSession();
             }
         });
+    }
+
+    public void openStartSession() {
+        sessionIntent = new Intent(this, StartSession.class);
+        startActivity(sessionIntent);
     }
 }
 
