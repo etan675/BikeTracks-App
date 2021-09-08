@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -29,9 +30,9 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
     private Chronometer mChronometer;
     private long pauseOffset;
     boolean active;
+    Button finishSessionButton;
 
     DBHelper myDb;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +78,7 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
         mGyro = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         mMagno = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
-        //Output Sensor Data
+        //Register all available sensors
         if (accelerometer != null) {
             sensorManager.registerListener(StartSession.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
             Log.d(TAG, "onCreate: Registered accelerometer Listener");
@@ -98,6 +99,16 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
         } else {
             Log.d(TAG, "Magno Not Supported");
         }
+
+        // finish Session Button
+        finishSessionButton = (Button) findViewById(R.id.finishSessionButton);
+        finishSessionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                endSensor();
+                finish();
+            }
+        });
     }
 
     public void startChronometer(View v) throws IOException {
@@ -121,12 +132,12 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
         pauseOffset = 0;
     }
 
-
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
     }
 
+    //Get Sensor Data When Changed
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor sensor = sensorEvent.sensor;
@@ -161,8 +172,7 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
         }
     }
 
-    public void toggle(View v) {
-        v.setEnabled(false);
-        Log.d("success", "Button Disabled");
+    public void endSensor() {
+        sensorManager.unregisterListener(this);
     }
 }
