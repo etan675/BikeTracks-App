@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
-public class StartSession extends AppCompatActivity implements SensorEventListener {
+public class SessionManager extends AppCompatActivity implements SensorEventListener {
 
     private static final String TAG = "StartSession";
 
@@ -32,14 +32,14 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
     boolean active;
     Button finishSessionButton;
 
-    DBHelper myDb;
+    SensorDatabase myDb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
         //Initialising Database
-        myDb = new DBHelper(this);
+        myDb = new SensorDatabase(this);
 
         mChronometer= (Chronometer) findViewById(R.id.chronometer);
         mChronometer.setFormat("Time: %s");
@@ -50,7 +50,7 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
             public void onChronometerTick(Chronometer chronometer) {
                 if ((SystemClock.elapsedRealtime() - mChronometer.getBase()) >= 10000){
                     mChronometer.setBase(SystemClock.elapsedRealtime());
-                    Toast.makeText(StartSession.this, "Bing!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SessionManager.this, "Bing!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -80,21 +80,21 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
 
         //Register all available sensors
         if (accelerometer != null) {
-            sensorManager.registerListener(StartSession.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(SessionManager.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
             Log.d(TAG, "onCreate: Registered accelerometer Listener");
         } else {
             Log.d(TAG, "Accelerometer Not Supported");
         }
 
         if (mGyro != null) {
-            sensorManager.registerListener(StartSession.this, mGyro, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(SessionManager.this, mGyro, SensorManager.SENSOR_DELAY_NORMAL);
             Log.d(TAG, "onCreate: Registered Gyro Listener");
         } else {
             Log.d(TAG, "Gyro not supported");
         }
 
         if (mMagno != null) {
-            sensorManager.registerListener(StartSession.this, mMagno, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(SessionManager.this, mMagno, SensorManager.SENSOR_DELAY_NORMAL);
             Log.d(TAG, "onCreate: Registered Magno Listener");
         } else {
             Log.d(TAG, "Magno Not Supported");

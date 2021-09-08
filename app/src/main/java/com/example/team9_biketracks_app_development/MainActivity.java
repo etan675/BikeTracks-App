@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -29,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openStartSession() {
-        sessionIntent = new Intent(this, StartSession.class);
+        sessionIntent = new Intent(this, SessionManager.class);
         startActivity(sessionIntent);
     }
 }

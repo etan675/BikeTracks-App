@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 
 /** Custom Database class. */
-public class DBHelper extends SQLiteOpenHelper {
+public class SensorDatabase extends SQLiteOpenHelper {
     /** Database name. */
     private static final String DATABASE_NAME = "BikeTracks.db";
     /** Accelerometer table name. */
@@ -21,16 +21,16 @@ public class DBHelper extends SQLiteOpenHelper {
     /** Magnetometer table name. */
     private final String MAGNETOMETER_TABLE_NAME = "Magnetometer";
     /** Accelerometer column names. */
-    private final String[] ACCELEROMETER_COLUMN_NAMES = {"Acc_X", "Acc_Y", "Acc_Z"};
+    private final String[] ACCELEROMETER_COLUMN_NAMES = {"acc_x", "acc_y", "acc_z"};
     /** Gyroscope column names. */
-    private final String[] GYROSCOPE_COLUMN_NAMES = {"Gyro_X", "Gyro_Y", "Gyro_Z"};
+    private final String[] GYROSCOPE_COLUMN_NAMES = {"gyro_x", "gyro_y", "gyro_z"};
     /** Magnetometer column names. */
-    private final String[] MAGNETOMETER_COLUMN_NAMES = {"Mag_X", "Mag_y", "Mag_Z"};
+    private final String[] MAGNETOMETER_COLUMN_NAMES = {"mag_x", "mag_y", "mag_z"};
 
     /** Constructor for DBHelper.
      * @param context Context.
      * */
-    public DBHelper(Context context) {
+    public SensorDatabase(Context context) {
         super(context, DATABASE_NAME , null, 1);
     }
 
@@ -41,13 +41,13 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " +
                 ACCELEROMETER_TABLE_NAME +
-                "(id integer primary key, Acc_X float, Acc_Y float, Acc_Z float)");
+                "(id integer primary key, acc_x float, acc_y float, acc_z float)");
         db.execSQL("create table " +
                 GYROSCOPE_TABLE_NAME +
-                "(id integer primary key, Gyro_X float, Gyro_Y float, Gyro_Z float)");
+                "(id integer primary key, gyro_x float, gyro_y float, gyro_z float)");
         db.execSQL("create table " +
                 MAGNETOMETER_TABLE_NAME +
-                "(id integer primary key, Mag_X float, Mag_Y float, Mag_Z float)");
+                "(id integer primary key, mag_x float, mag_y float, mag_z float)");
     }
 
     /** Called when the database needs to be upgraded.
@@ -64,44 +64,44 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /** Insert data into Accelerometer table.
-     * @param Acc_x Accelerometer x value.
-     * @param Acc_y Accelerometer y value.
-     * @param Acc_z Accelerometer z value.
+     * @param acc_x Accelerometer x value.
+     * @param acc_y Accelerometer y value.
+     * @param acc_z Accelerometer z value.
      * */
-    public void insertAccelerometerData(float Acc_x, float Acc_y, float Acc_z) {
+    public void insertAccelerometerData(float acc_x, float acc_y, float acc_z) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ACCELEROMETER_COLUMN_NAMES[0], Acc_x);
-        contentValues.put(ACCELEROMETER_COLUMN_NAMES[1], Acc_y);
-        contentValues.put(ACCELEROMETER_COLUMN_NAMES[2], Acc_z);
+        contentValues.put(ACCELEROMETER_COLUMN_NAMES[0], acc_x);
+        contentValues.put(ACCELEROMETER_COLUMN_NAMES[1], acc_y);
+        contentValues.put(ACCELEROMETER_COLUMN_NAMES[2], acc_z);
         this.getWritableDatabase().insert(ACCELEROMETER_TABLE_NAME, null, contentValues);
     }
 
     /** Insert data into Gyroscope table.
-     * @param Gyro_X Gyroscope x value.
-     * @param Gyro_Y Gyroscope y value.
-     * @param Gyro_Z Gyroscope z value.
+     * @param gyro_x Gyroscope x value.
+     * @param gyro_y Gyroscope y value.
+     * @param gyro_z Gyroscope z value.
      * */
-    public void insertGyroscopeData(float Gyro_X, float Gyro_Y, float Gyro_Z) {
+    public void insertGyroscopeData(float gyro_x, float gyro_y, float gyro_z) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(GYROSCOPE_COLUMN_NAMES[0], Gyro_X);
-        contentValues.put(GYROSCOPE_COLUMN_NAMES[1], Gyro_Y);
-        contentValues.put(GYROSCOPE_COLUMN_NAMES[2], Gyro_Z);
+        contentValues.put(GYROSCOPE_COLUMN_NAMES[0], gyro_x);
+        contentValues.put(GYROSCOPE_COLUMN_NAMES[1], gyro_y);
+        contentValues.put(GYROSCOPE_COLUMN_NAMES[2], gyro_z);
         this.getWritableDatabase().insert(GYROSCOPE_TABLE_NAME, null, contentValues);
     }
 
     /** Insert data into Magnetometer table.
-     * @param Mag_X Magnetometer x value.
-     * @param Mag_Y Magnetometer y value.
-     * @param Mag_Z Magnetometer z value.
+     * @param mag_x Magnetometer x value.
+     * @param mag_y Magnetometer y value.
+     * @param mag_z Magnetometer z value.
      * */
-    public void insertMagnetometerData(float Mag_X, float Mag_Y, float Mag_Z) {
+    public void insertMagnetometerData(float mag_x, float mag_y, float mag_z) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(MAGNETOMETER_COLUMN_NAMES[0], Mag_X);
-        contentValues.put(MAGNETOMETER_COLUMN_NAMES[1], Mag_Y);
-        contentValues.put(MAGNETOMETER_COLUMN_NAMES[2], Mag_Z);
+        contentValues.put(MAGNETOMETER_COLUMN_NAMES[0], mag_x);
+        contentValues.put(MAGNETOMETER_COLUMN_NAMES[1], mag_y);
+        contentValues.put(MAGNETOMETER_COLUMN_NAMES[2], mag_z);
         this.getWritableDatabase().insert(MAGNETOMETER_TABLE_NAME, null, contentValues);
     }
-
+/*
     public Cursor getAccData(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "select * from " +
@@ -109,14 +109,14 @@ public class DBHelper extends SQLiteOpenHelper {
                 " where id=" + id + "",
                 null );
         return res;
-    }
-
+    }*/
+/*
     public int numberOfAccRows(){
         SQLiteDatabase db = this.getReadableDatabase();
         int numRows = (int) DatabaseUtils.queryNumEntries(db, ACCELEROMETER_TABLE_NAME);
         return numRows;
-    }
-
+    }*/
+/*
     public ArrayList<String> getAllAccData() {
         ArrayList<String> array_list = new ArrayList<String>();
 
@@ -130,5 +130,5 @@ public class DBHelper extends SQLiteOpenHelper {
             res.moveToNext();
         }
         return array_list;
-    }
+    }*/
 }
