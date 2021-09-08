@@ -3,7 +3,6 @@ package com.example.team9_biketracks_app_development;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -12,13 +11,10 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.FileWriter;
 import java.io.IOException;
 
 public class StartSession extends AppCompatActivity implements SensorEventListener {
@@ -143,7 +139,7 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
             xValue.setText(String.valueOf(sensorEvent.values[0]));
             yValue.setText(String.valueOf(sensorEvent.values[1]));
             zValue.setText(String.valueOf(sensorEvent.values[2]));
-            myDb.insertAccSensors(xAccValue, yAccValue, zAccValue);
+            myDb.insertAccelerometerData(xAccValue, yAccValue, zAccValue);
         } if(sensor.getType() == Sensor.TYPE_GYROSCOPE) {
             Log.d(TAG, "GYROSCOPE onSensorChanged: X: " + sensorEvent.values[0] + ", Y: " + sensorEvent.values[1] + ", Z: " + sensorEvent.values[2]);
             xGyroValue = sensorEvent.values[0];
@@ -152,7 +148,7 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
             xGValue.setText(String.valueOf(sensorEvent.values[0]));
             yGValue.setText(String.valueOf(sensorEvent.values[1]));
             zGValue.setText(String.valueOf(sensorEvent.values[2]));
-            myDb.insertGyroSensors(xGyroValue, yGyroValue, zGyroValue);
+            myDb.insertGyroscopeData(xGyroValue, yGyroValue, zGyroValue);
         } if(sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
             Log.d(TAG, "MAGNETIC FIELD onSensorChanged: X: " + sensorEvent.values[0] + ", Y: " + sensorEvent.values[1] + ", Z: " + sensorEvent.values[2]);
             xMagValue = sensorEvent.values[0];
@@ -161,16 +157,12 @@ public class StartSession extends AppCompatActivity implements SensorEventListen
             xMValue.setText(String.valueOf(sensorEvent.values[0]));
             yMValue.setText(String.valueOf(sensorEvent.values[1]));
             zMValue.setText(String.valueOf(sensorEvent.values[2]));
-            myDb.insertMagSensors(xMagValue, yMagValue, zMagValue);
-
+            myDb.insertMagnetometerData(xMagValue, yMagValue, zMagValue);
         }
-
     }
 
     public void toggle(View v) {
         v.setEnabled(false);
         Log.d("success", "Button Disabled");
     }
-
 }
-

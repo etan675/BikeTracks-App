@@ -1,6 +1,5 @@
 package com.example.team9_biketracks_app_development;
 
-import androidx.annotation.LongDef;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -29,4 +28,3 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 }
-
