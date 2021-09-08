@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-
-    private static final String TAG = "MainActivity";
     Intent sessionIntent;
     private Button startSessionButton;
 
@@ -28,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openStartSession() {
-        sessionIntent = new Intent(this, SessionManager.class);
+        sessionIntent = new Intent(this, ActivityManager.class);
         startActivity(sessionIntent);
     }
 }

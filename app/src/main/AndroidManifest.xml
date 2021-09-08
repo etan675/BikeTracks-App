@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Team9BikeTracksAppDevelopment">
         <activity
-            android:name=".SessionManager"
+            android:name=".ActivityManager"
             android:exported="true" />
         <activity
             android:name=".MainActivity"

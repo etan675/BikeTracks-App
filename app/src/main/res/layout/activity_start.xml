@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SessionManager">
+    tools:context=".ActivityManager">
 
     <Chronometer
         android:id="@+id/chronometer"
@@ -20,10 +20,10 @@
         android:layout_below="@id/chronometer"
         android:text="Accelerometer" />
     <LinearLayout
+        android:id="@+id/firstLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/firstLayout"
         android:layout_marginTop="10sp"
         android:layout_below="@+id/acc">
 
@@ -35,87 +35,88 @@
             android:inputType="numberDecimal" />
 
         <EditText
+            android:id="@+id/yValue"
             android:layout_width="115sp"
             android:layout_height="wrap_content"
-            android:id="@+id/yValue"
             android:inputType="numberDecimal" />
 
         <EditText
+            android:id="@+id/zValue"
+
             android:layout_width="115sp"
             android:layout_height="wrap_content"
-            android:id="@+id/zValue"
             android:inputType="numberDecimal" />
     </LinearLayout>
 
     <TextView
+        android:id="@+id/gyro"
         android:layout_width="200sp"
         android:text="Gyroscope"
         android:layout_height="wrap_content"
-        android:id="@+id/gyro"
         android:layout_marginTop="20sp"
         android:layout_below="@+id/firstLayout"/>
 
     <LinearLayout
+        android:id="@+id/secondLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/secondLayout"
         android:layout_below="@+id/gyro"
         android:layout_marginTop="10sp">
 
         <EditText
+            android:id="@+id/xGValue"
             android:layout_width="115sp"
-            android:layout_height="wrap_content"
-            android:id="@+id/xGValue" />
+            android:layout_height="wrap_content" />
 
         <EditText
+            android:id="@+id/yGValue"
             android:layout_width="115sp"
-            android:layout_height="wrap_content"
-            android:id="@+id/yGValue" />
+            android:layout_height="wrap_content" />
 
         <EditText
+            android:id="@+id/zGValue"
             android:layout_width="115sp"
-            android:layout_height="wrap_content"
-            android:id="@+id/zGValue" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <TextView
+        android:id="@+id/mag"
         android:layout_width="200sp"
         android:text="Magno"
         android:layout_height="wrap_content"
-        android:id="@+id/mag"
         android:layout_marginTop="20sp"
         android:layout_below="@+id/secondLayout"/>
 
     <LinearLayout
+        android:id="@+id/thirdLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/thirdLayout"
         android:layout_below="@+id/mag"
         android:layout_marginTop="10sp">
 
         <EditText
+            android:id="@+id/xMValue"
             android:layout_width="115sp"
-            android:layout_height="wrap_content"
-            android:id="@+id/xMValue" />
+            android:layout_height="wrap_content" />
 
         <EditText
+            android:id="@+id/yMValue"
             android:layout_width="115sp"
-            android:layout_height="wrap_content"
-            android:id="@+id/yMValue" />
+            android:layout_height="wrap_content" />
 
         <EditText
+            android:id="@+id/zMValue"
             android:layout_width="115sp"
-            android:layout_height="wrap_content"
-            android:id="@+id/zMValue" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/fourthLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/fourthLayout"
         android:layout_below="@+id/thirdLayout"
         android:layout_marginTop="20sp">
         <Button
