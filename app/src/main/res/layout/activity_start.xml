@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivityManager">
+
+    <Chronometer
+        android:id="@+id/chronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/acc"
+        android:layout_width="200sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/chronometer"
+        android:text="Accelerometer" />
+    <LinearLayout
+        android:id="@+id/firstLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10sp"
+        android:layout_below="@+id/acc">
+
+        <EditText
+            android:id="@+id/xValue"
+            android:layout_width="115sp"
+            android:layout_height="wrap_content"
+            tools:ignore="TouchTargetSizeCheck"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/yValue"
+            android:layout_width="115sp"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/zValue"
+
+            android:layout_width="115sp"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/gyro"
+        android:layout_width="200sp"
+        android:text="Gyroscope"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20sp"
+        android:layout_below="@+id/firstLayout"/>
+
+    <LinearLayout
+        android:id="@+id/secondLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/gyro"
+        android:layout_marginTop="10sp">
+
+        <EditText
+            android:id="@+id/xGValue"
+            android:layout_width="115sp"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/yGValue"
+            android:layout_width="115sp"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/zGValue"
+            android:layout_width="115sp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/mag"
+        android:layout_width="200sp"
+        android:text="Magno"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20sp"
+        android:layout_below="@+id/secondLayout"/>
+
+    <LinearLayout
+        android:id="@+id/thirdLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/mag"
+        android:layout_marginTop="10sp">
+
+        <EditText
+            android:id="@+id/xMValue"
+            android:layout_width="115sp"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/yMValue"
+            android:layout_width="115sp"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/zMValue"
+            android:layout_width="115sp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fourthLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/thirdLayout"
+        android:layout_marginTop="20sp">
+        <Button
+            android:id="@+id/pauseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:text="Pause"
+            android:onClick="pauseChronometer"/>
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:text="Start"
+            android:onClick="startChronometer"/>
+
+        <Button
+            android:id="@+id/stopButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:text="Stop Session" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/finishSessionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20sp"
+        android:layout_below="@id/fourthLayout"
+        android:layout_marginLeft="20sp"
+        android:text="Finish Session" />
+
+</RelativeLayout>

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Team9-BikeTracks-App-Development</string>
+
+    <string-array name ="activity">
+        <item>Bike</item>
+        <item>E-Scooter</item>
+        <item>Run</item>
+        <item>Walk</item>
+        <item>Car</item>
+    </string-array>
+</resources>
