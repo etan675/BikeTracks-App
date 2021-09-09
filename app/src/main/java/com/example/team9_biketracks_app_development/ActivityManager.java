@@ -27,6 +27,16 @@ public class ActivityManager extends AppCompatActivity implements SensorEventLis
     private SensorManager sensorManager;
     /** Sensor fields. */
     EditText acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z, mag_x, mag_y, mag_z;
+    /** Store old sensor fields */
+    float old_acc_x = 1.0f;
+    float old_acc_y = 1.0f;
+    float old_acc_z = 1.0f;
+    float old_gyro_x = 1.0f;
+    float old_gyro_y = 1.0f;
+    float old_gyro_z = 1.0f;
+    float old_mag_x = 1.0f;
+    float old_mag_y = 1.0f;
+    float old_mag_z = 1.0f;
     /** Chronometer. */
     private Chronometer mChronometer;
     /** Offset. */
@@ -115,21 +125,36 @@ public class ActivityManager extends AppCompatActivity implements SensorEventLis
             acc_x.setText(String.valueOf(sensorEvent.values[0]));
             acc_y.setText(String.valueOf(sensorEvent.values[1]));
             acc_z.setText(String.valueOf(sensorEvent.values[2]));
-            sensorDatabase.insertAccelerometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
+            if ((old_acc_x != sensorEvent.values[0]) || (old_acc_y != sensorEvent.values[1]) || (old_acc_z != sensorEvent.values[2])){
+                sensorDatabase.insertAccelerometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
+                old_acc_x = sensorEvent.values[0];
+                old_acc_y = sensorEvent.values[1];
+                old_acc_z = sensorEvent.values[2];
+            }
         }
         if (sensor.getType() == Sensor.TYPE_GYROSCOPE) {
             Log.d(LOGGER, "Gyroscope: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
             gyro_x.setText(String.valueOf(sensorEvent.values[0]));
             gyro_y.setText(String.valueOf(sensorEvent.values[1]));
             gyro_z.setText(String.valueOf(sensorEvent.values[2]));
-            sensorDatabase.insertGyroscopeData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
+            if ((old_gyro_x != sensorEvent.values[0]) || (old_gyro_y != sensorEvent.values[1]) || (old_gyro_z != sensorEvent.values[2])){
+                sensorDatabase.insertGyroscopeData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
+                old_gyro_x = sensorEvent.values[0];
+                old_gyro_y = sensorEvent.values[1];
+                old_gyro_z = sensorEvent.values[2];
+            }
         }
         if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
             Log.d(LOGGER, "Magnetometer: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
             mag_x.setText(String.valueOf(sensorEvent.values[0]));
             mag_y.setText(String.valueOf(sensorEvent.values[1]));
             mag_z.setText(String.valueOf(sensorEvent.values[2]));
-            sensorDatabase.insertMagnetometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
+            if ((old_mag_x != sensorEvent.values[0]) || (old_mag_y != sensorEvent.values[1]) || (old_mag_z != sensorEvent.values[2])){
+                sensorDatabase.insertMagnetometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
+                old_mag_x = sensorEvent.values[0];
+                old_mag_y = sensorEvent.values[1];
+                old_mag_z = sensorEvent.values[2];
+            }
         }
     }
 }
