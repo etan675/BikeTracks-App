@@ -1,11 +1,7 @@
 package com.example.team9_biketracks_app_development;
 
-import java.util.ArrayList;
-
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -109,14 +105,14 @@ public class SensorDatabase extends SQLiteOpenHelper {
                 " where id=" + id + "",
                 null );
         return res;
-    }*/
-/*
+    }
+
     public int numberOfAccRows(){
         SQLiteDatabase db = this.getReadableDatabase();
         int numRows = (int) DatabaseUtils.queryNumEntries(db, ACCELEROMETER_TABLE_NAME);
         return numRows;
-    }*/
-/*
+    }
+
     public ArrayList<String> getAllAccData() {
         ArrayList<String> array_list = new ArrayList<String>();
 

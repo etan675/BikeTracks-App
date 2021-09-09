@@ -9,14 +9,13 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
     Intent sessionIntent;
-    private Button startSessionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startSessionButton = (Button) findViewById(R.id.startSessionButton);
+        Button startSessionButton = (Button) findViewById(R.id.startSessionButton);
         startSessionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

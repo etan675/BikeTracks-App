@@ -9,6 +9,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -20,6 +21,8 @@ import java.io.IOException;
 
 /** ActivityManager class. */
 public class ActivityManager extends AppCompatActivity implements SensorEventListener {
+    /** Logger. */
+    private static final String LOGGER = "StartSession";
     /** SessionManager instance. */
     private SensorManager sensorManager;
     /** Sensor fields. */
@@ -30,45 +33,37 @@ public class ActivityManager extends AppCompatActivity implements SensorEventLis
     private long pauseOffset;
     /** active. */
     private boolean active;
-    /** Finish session button. */
-    Button finishSessionButton;
     /** SensorDatabase instance. */
-    SensorDatabase sensorDatabase;
+    private SensorDatabase sensorDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         sensorDatabase = new SensorDatabase(this);
-        mChronometer= (Chronometer) findViewById(R.id.chronometer);
+        mChronometer = findViewById(R.id.chronometer);
         mChronometer.setFormat("Time: %s");
         mChronometer.setBase(SystemClock.elapsedRealtime());
-
-        mChronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
-            @Override
-            public void onChronometerTick(Chronometer chronometer) {
-                if ((SystemClock.elapsedRealtime() - mChronometer.getBase()) >= 10000){
-                    mChronometer.setBase(SystemClock.elapsedRealtime());
-                    Toast.makeText(ActivityManager.this, "Bing!", Toast.LENGTH_SHORT).show();
-                }
+        mChronometer.setOnChronometerTickListener(chronometer -> {
+            if ((SystemClock.elapsedRealtime() - mChronometer.getBase()) >= 10000){
+                mChronometer.setBase(SystemClock.elapsedRealtime());
+                Toast.makeText(ActivityManager.this, "Bing!", Toast.LENGTH_SHORT).show();
             }
         });
-        acc_x = (EditText) findViewById(R.id.xValue);
-        acc_y = (EditText) findViewById(R.id.yValue);
-        acc_z = (EditText) findViewById(R.id.zValue);
-        gyro_x = (EditText) findViewById(R.id.xGValue);
-        gyro_y = (EditText) findViewById(R.id.yGValue);
-        gyro_z = (EditText) findViewById(R.id.zGValue);
-        mag_x = (EditText) findViewById(R.id.xMValue);
-        mag_y = (EditText) findViewById(R.id.yMValue);
-        mag_z = (EditText) findViewById(R.id.zMValue);
+        acc_x = findViewById(R.id.xValue);
+        acc_y = findViewById(R.id.yValue);
+        acc_z = findViewById(R.id.zValue);
+        gyro_x = findViewById(R.id.xGValue);
+        gyro_y = findViewById(R.id.yGValue);
+        gyro_z = findViewById(R.id.zGValue);
+        mag_x = findViewById(R.id.xMValue);
+        mag_y = findViewById(R.id.yMValue);
+        mag_z = findViewById(R.id.zMValue);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-
-        Sensor accelerometer, gyroscope, magnetometer;
-        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-        magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        // Register available sensors
+        Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        Sensor gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        Sensor magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        // register sensors
         if (accelerometer != null) {
             sensorManager.registerListener(ActivityManager.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
@@ -78,14 +73,10 @@ public class ActivityManager extends AppCompatActivity implements SensorEventLis
         if (magnetometer != null) {
             sensorManager.registerListener(ActivityManager.this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
-        // finish Session Button
-        finishSessionButton = (Button) findViewById(R.id.finishSessionButton);
-        finishSessionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                endSensor();
-                finish();
-            }
+        Button finishSessionButton = findViewById(R.id.finishSessionButton);
+        finishSessionButton.setOnClickListener(view -> {
+            sensorManager.unregisterListener(this);
+            finish();
         });
     }
 
@@ -119,27 +110,26 @@ public class ActivityManager extends AppCompatActivity implements SensorEventLis
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor sensor = sensorEvent.sensor;
-        if(sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+        if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            Log.d(LOGGER, "Accelerometer: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
             acc_x.setText(String.valueOf(sensorEvent.values[0]));
             acc_y.setText(String.valueOf(sensorEvent.values[1]));
             acc_z.setText(String.valueOf(sensorEvent.values[2]));
             sensorDatabase.insertAccelerometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
         }
-        if(sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+        if (sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+            Log.d(LOGGER, "Gyroscope: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
             gyro_x.setText(String.valueOf(sensorEvent.values[0]));
             gyro_y.setText(String.valueOf(sensorEvent.values[1]));
             gyro_z.setText(String.valueOf(sensorEvent.values[2]));
             sensorDatabase.insertGyroscopeData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
         }
-        if(sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+        if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+            Log.d(LOGGER, "Magnetometer: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
             mag_x.setText(String.valueOf(sensorEvent.values[0]));
             mag_y.setText(String.valueOf(sensorEvent.values[1]));
             mag_z.setText(String.valueOf(sensorEvent.values[2]));
             sensorDatabase.insertMagnetometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
         }
-    }
-
-    public void endSensor() {
-        sensorManager.unregisterListener(this);
     }
 }
