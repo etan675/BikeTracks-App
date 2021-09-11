@@ -43,43 +43,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
             navigationView.setCheckedItem((R.id.nav_home));
         }
-
-//        //Dropdown menu for the activity chosen
-//        Spinner spinner = findViewById(R.id.activity_spinner);
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.activity, android.R.layout.simple_spinner_item);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner.setAdapter(adapter);
-//        spinner.setOnItemSelectedListener(this);
-//
-//        //Start button
-//        Button startSessionButton = (Button) findViewById(R.id.startSessionButton);
-//        startSessionButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                openStartSession();
-//            }
-//        });
-
-
     }
-//
-//    public void openStartSession() {
-//        sessionIntent = new Intent(this, ActivityManager.class);
-//        startActivity(sessionIntent);
-//    }
-
-//    //Dropdown menu methods
-//    @Override
-//    public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-//        String text = parent.getItemAtPosition(position).toString();
-//        Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
-//    }
-//
-//    @Override
-//    public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//    }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
