@@ -7,9 +7,19 @@
         <entry key="..\:/Users/nigel/AndroidStudioProjects/Team9BikeTracksAppDevelopment/app/src/main/res/layout/activity_start.xml" value="0.25833333333333336" />
         <entry key="..\:/Users/nigel/OneDrive/Documents/GitHub/Team9-BikeTracks-App-Development/app/src/main/res/layout/activity_start.xml" value="0.14463019250253292" />
         <entry key="..\:/Users/yiwei/AndroidStudioProjects/Team9-BikeTracks-App-Development/app/src/main/res/layout/activity_main.xml" value="0.2740036231884058" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.16510416666666666" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.16296296296296298" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2865452725280161" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.12297734627831715" />
         <entry key="app/src/main/res/layout/activity_start.xml" value="0.27943840579710144" />
+        <entry key="app/src/main/res/layout/fragment_help.xml" value="0.11795022159971562" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.16056556794975826" />
+        <entry key="app/src/main/res/layout/fragment_log.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.19491525423728814" />
+        <entry key="app/src/main/res/layout/fragment_route.xml" value="0.16065573770491803" />
+        <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.28229166666666666" />
+        <entry key="app/src/main/res/layout/nav_header.xml" value="0.2676056338028169" />
+        <entry key="app/src/main/res/menu/drawer_menu.xml" value="0.43710309513432927" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.16510416666666666" />
       </map>
     </option>
   </component>
