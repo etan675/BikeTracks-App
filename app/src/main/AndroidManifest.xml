@@ -11,14 +11,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Team9BikeTracksAppDevelopment">
         <activity
-            android:name=".ActivityManager"
+            android:name=".SensorActivity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"
+            android:theme="@style/Theme.Team9BikeTracksAppDevelopment.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

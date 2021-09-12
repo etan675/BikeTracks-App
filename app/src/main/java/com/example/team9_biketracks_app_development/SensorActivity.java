@@ -1,6 +1,8 @@
 package com.example.team9_biketracks_app_development;
 
 import androidx.annotation.NonNull;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -26,20 +28,24 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
-
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
-/** ActivityManager class. */
-public class ActivityManager extends AppCompatActivity implements SensorEventListener {
-    public static final int DEFAULT_UPDATE_INTERVAL = 30;
-    public static final int FASTEST_UPDATE_INTERVAL= 5;
+
+public class SensorActivity extends AppCompatActivity implements SensorEventListener {
     /** Logger. */
     private static final String LOGGER = "StartSession";
+    /** Permission code for FINE_LOCATION. */
     private static final int FINE_LOCATION_PERMISSION = 99 ;
-    /** SessionManager instance. */
+    /** GPS update settings. */
+    public static final int DEFAULT_UPDATE_INTERVAL = 10;
+    public static final int FASTEST_UPDATE_INTERVAL= 5;
+    /** SensorManager instance. */
     private SensorManager sensorManager;
-
+    /** Provider of GPS data. */
     FusedLocationProviderClient fusedLocationProviderClient;
+    /** LocationRequest instance. */
     LocationRequest locationRequest;
 
     /** Sensor fields. */
@@ -62,7 +68,12 @@ public class ActivityManager extends AppCompatActivity implements SensorEventLis
     private boolean active;
     /** SensorDatabase instance. */
     private SensorDatabase sensorDatabase;
+    /** Last read time of each sensor. */
+    private LocalDateTime accelerometerReadTime, gyroscopeReadTime, magnetometerReadTime;
+    /** Limit of how often database is written to in seconds. */
+    private final int writeLimit = 1;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,12 +82,13 @@ public class ActivityManager extends AppCompatActivity implements SensorEventLis
         mChronometer = findViewById(R.id.chronometer);
         mChronometer.setFormat("Time: %s");
         mChronometer.setBase(SystemClock.elapsedRealtime());
+        /**
         mChronometer.setOnChronometerTickListener(chronometer -> {
-            if ((SystemClock.elapsedRealtime() - mChronometer.getBase()) >= 10000){
+            if ((SystemClock.elapsedRealtime() - mChronometer.getBase()) >= 100000){
                 mChronometer.setBase(SystemClock.elapsedRealtime());
-                Toast.makeText(ActivityManager.this, "Bing!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SensorActivity.this, "Bing!", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
         acc_x = findViewById(R.id.xValue);
         acc_y = findViewById(R.id.yValue);
         acc_z = findViewById(R.id.zValue);
@@ -89,28 +101,26 @@ public class ActivityManager extends AppCompatActivity implements SensorEventLis
         latitude = findViewById(R.id.latitudeValue);
         longitude = findViewById(R.id.longitudeValue);
         altitude = findViewById(R.id.altitudeValue);
+
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         Sensor gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         Sensor magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
         locationRequest = LocationRequest.create();
-
         locationRequest.setInterval(1000 * DEFAULT_UPDATE_INTERVAL);
-
         locationRequest.setFastestInterval(1000 * FASTEST_UPDATE_INTERVAL);
-
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
         // register sensors
         if (accelerometer != null) {
-            sensorManager.registerListener(ActivityManager.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(SensorActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
         if (gyroscope != null) {
-            sensorManager.registerListener(ActivityManager.this, gyroscope, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(SensorActivity.this, gyroscope, SensorManager.SENSOR_DELAY_NORMAL);
         }
         if (magnetometer != null) {
-            sensorManager.registerListener(ActivityManager.this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(SensorActivity.this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
         Button finishSessionButton = findViewById(R.id.finishSessionButton);
         finishSessionButton.setOnClickListener(view -> {
@@ -118,9 +128,12 @@ public class ActivityManager extends AppCompatActivity implements SensorEventLis
             finish();
         });
         updateGPS();
+        accelerometerReadTime = LocalDateTime.now();
+        gyroscopeReadTime = LocalDateTime.now();
+        magnetometerReadTime = LocalDateTime.now();
     }
 
-
+    /** Actions after requesting users for permission, overriding AppCompatActivity class method. */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -135,13 +148,12 @@ public class ActivityManager extends AppCompatActivity implements SensorEventLis
                 break;
         }
     }
-
+    /** Get permissions to track GPS,
+        get location from fused client provider,
+        update UI. */
     private void updateGPS() {
-        //get permissions to track GPS
-        //get location from fused client provider
-        //update UI
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(ActivityManager.this);
 
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(SensorActivity.this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>(){
                 @Override
@@ -152,12 +164,13 @@ public class ActivityManager extends AppCompatActivity implements SensorEventLis
             });
         }
         else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, FINE_LOCATION_PERMISSION);
             }
         }
     }
 
+    /** Update the UI values for GPS data. */
     private void updateUIValues(Location location) {
         latitude.setText(String.valueOf(location.getLatitude()));
         longitude.setText(String.valueOf(location.getLongitude()));
@@ -168,7 +181,6 @@ public class ActivityManager extends AppCompatActivity implements SensorEventLis
             altitude.setText("Not available");
         }
     }
-
 
     public void startChronometer(View v) throws IOException {
         if (!active) {
@@ -196,45 +208,48 @@ public class ActivityManager extends AppCompatActivity implements SensorEventLis
 
     }
 
-    //Get Sensor Data When Changed
+    /** Write sensor data into database.
+     * Only writes if the previous write was long than writeLimit seconds.
+     * @param sensorEvent Sensor event.
+     * */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor sensor = sensorEvent.sensor;
         if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            Log.d(LOGGER, "Accelerometer: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
+            if (ChronoUnit.SECONDS.between(accelerometerReadTime, LocalDateTime.now()) <= writeLimit) {
+                return;
+            }
+            accelerometerReadTime = LocalDateTime.now();
             acc_x.setText(String.valueOf(sensorEvent.values[0]));
             acc_y.setText(String.valueOf(sensorEvent.values[1]));
             acc_z.setText(String.valueOf(sensorEvent.values[2]));
-            if ((old_acc_x != sensorEvent.values[0]) || (old_acc_y != sensorEvent.values[1]) || (old_acc_z != sensorEvent.values[2])){
-                sensorDatabase.insertAccelerometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
-                old_acc_x = sensorEvent.values[0];
-                old_acc_y = sensorEvent.values[1];
-                old_acc_z = sensorEvent.values[2];
-            }
+            sensorDatabase.insertAccelerometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
+            Log.d(LOGGER, "Accelerometer: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
+            return;
         }
         if (sensor.getType() == Sensor.TYPE_GYROSCOPE) {
-            Log.d(LOGGER, "Gyroscope: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
+            if (ChronoUnit.SECONDS.between(gyroscopeReadTime, LocalDateTime.now()) <= writeLimit) {
+                return;
+            }
+            gyroscopeReadTime = LocalDateTime.now();
             gyro_x.setText(String.valueOf(sensorEvent.values[0]));
             gyro_y.setText(String.valueOf(sensorEvent.values[1]));
             gyro_z.setText(String.valueOf(sensorEvent.values[2]));
-            if ((old_gyro_x != sensorEvent.values[0]) || (old_gyro_y != sensorEvent.values[1]) || (old_gyro_z != sensorEvent.values[2])){
-                sensorDatabase.insertGyroscopeData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
-                old_gyro_x = sensorEvent.values[0];
-                old_gyro_y = sensorEvent.values[1];
-                old_gyro_z = sensorEvent.values[2];
-            }
+            sensorDatabase.insertGyroscopeData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
+            Log.d(LOGGER, "Gyroscope: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
+            return;
         }
         if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-            Log.d(LOGGER, "Magnetometer: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
+            if (ChronoUnit.SECONDS.between(magnetometerReadTime, LocalDateTime.now()) <= writeLimit) {
+                return;
+            }
+            magnetometerReadTime = LocalDateTime.now();
             mag_x.setText(String.valueOf(sensorEvent.values[0]));
             mag_y.setText(String.valueOf(sensorEvent.values[1]));
             mag_z.setText(String.valueOf(sensorEvent.values[2]));
-            if ((old_mag_x != sensorEvent.values[0]) || (old_mag_y != sensorEvent.values[1]) || (old_mag_z != sensorEvent.values[2])){
-                sensorDatabase.insertMagnetometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
-                old_mag_x = sensorEvent.values[0];
-                old_mag_y = sensorEvent.values[1];
-                old_mag_z = sensorEvent.values[2];
-            }
+            sensorDatabase.insertMagnetometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
+            Log.d(LOGGER, "Magnetometer: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
         }
     }
 }
