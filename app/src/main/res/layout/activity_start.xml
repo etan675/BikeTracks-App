@@ -20,7 +20,7 @@
         android:layout_below="@id/chronometer"
         android:text="Accelerometer" />
     <LinearLayout
-        android:id="@+id/firstLayout"
+        android:id="@+id/accValues"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -54,10 +54,10 @@
         android:text="Gyroscope"
         android:layout_height="wrap_content"
         android:layout_marginTop="20sp"
-        android:layout_below="@+id/firstLayout"/>
+        android:layout_below="@+id/accValues"/>
 
     <LinearLayout
-        android:id="@+id/secondLayout"
+        android:id="@+id/gyroValues"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -86,10 +86,10 @@
         android:text="Magno"
         android:layout_height="wrap_content"
         android:layout_marginTop="20sp"
-        android:layout_below="@+id/secondLayout"/>
+        android:layout_below="@+id/gyroValues"/>
 
     <LinearLayout
-        android:id="@+id/thirdLayout"
+        android:id="@+id/magnoValues"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -113,11 +113,60 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/fourthLayout"
+        android:id="@+id/location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/thirdLayout"
+        android:layout_below="@+id/magnoValues"
+        android:layout_marginTop="20sp">
+        <TextView
+            android:id="@+id/latitudeLabel"
+            android:layout_width="115sp"
+            android:layout_height="wrap_content"
+            android:text="Latitude"/>
+
+        <TextView
+            android:id="@+id/longitudeLabel"
+            android:layout_width="115sp"
+            android:layout_height="wrap_content"
+            android:text="Longitude"/>
+
+        <TextView
+            android:id="@+id/altitudeLabel"
+            android:layout_width="115sp"
+            android:layout_height="wrap_content"
+            android:text="Altitude"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/locationValues"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/location"
+        android:layout_marginTop="10sp">
+        <EditText
+            android:id="@+id/latitudeValue"
+            android:layout_width="115sp"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:id="@+id/longitudeValue"
+            android:layout_width="115sp"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:id="@+id/altitudeValue"
+            android:layout_width="115sp"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/locationValues"
         android:layout_marginTop="20sp">
         <Button
             android:id="@+id/pauseButton"
@@ -148,7 +197,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20sp"
-        android:layout_below="@id/fourthLayout"
+        android:layout_below="@id/buttons"
         android:layout_marginLeft="20sp"
         android:text="Finish Session" />
 
