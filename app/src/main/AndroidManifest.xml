@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Team9BikeTracksAppDevelopment">
         <activity
-            android:name=".ActivityManager"
+            android:name=".SensorActivity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"

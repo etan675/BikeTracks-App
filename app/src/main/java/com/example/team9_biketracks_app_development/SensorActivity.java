@@ -24,7 +24,7 @@ import java.time.temporal.ChronoUnit;
 
 
 /** ActivityManager class. */
-public class ActivityManager extends AppCompatActivity implements SensorEventListener {
+public class SensorActivity extends AppCompatActivity implements SensorEventListener {
     /** Logger. */
     private static final String LOGGER = "StartSession";
     /** SessionManager instance. */
@@ -56,7 +56,7 @@ public class ActivityManager extends AppCompatActivity implements SensorEventLis
         mChronometer.setOnChronometerTickListener(chronometer -> {
             if ((SystemClock.elapsedRealtime() - mChronometer.getBase()) >= 10000){
                 mChronometer.setBase(SystemClock.elapsedRealtime());
-                Toast.makeText(ActivityManager.this, "Bing!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SensorActivity.this, "Bing!", Toast.LENGTH_SHORT).show();
             }
         });
         acc_x = findViewById(R.id.xValue);
@@ -74,13 +74,13 @@ public class ActivityManager extends AppCompatActivity implements SensorEventLis
         Sensor magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         // register sensors
         if (accelerometer != null) {
-            sensorManager.registerListener(ActivityManager.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(SensorActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
         if (gyroscope != null) {
-            sensorManager.registerListener(ActivityManager.this, gyroscope, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(SensorActivity.this, gyroscope, SensorManager.SENSOR_DELAY_NORMAL);
         }
         if (magnetometer != null) {
-            sensorManager.registerListener(ActivityManager.this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(SensorActivity.this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
         Button finishSessionButton = findViewById(R.id.finishSessionButton);
         finishSessionButton.setOnClickListener(view -> {
