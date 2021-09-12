@@ -4,6 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 
 /** Custom Database class. */
@@ -26,8 +29,10 @@ public class SensorDatabase extends SQLiteOpenHelper {
     /** Constructor for DBHelper.
      * @param context Context.
      * */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public SensorDatabase(Context context) {
-        super(context, DATABASE_NAME , null, 1);
+        super(context, "BikeTracks" + java.time.LocalDate.now() + ".db" , null, 1);
+
     }
 
     /** Called when the database is created for the first time.
