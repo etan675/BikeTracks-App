@@ -31,7 +31,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
      * */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public SensorDatabase(Context context) {
-        super(context, "BikeTracks" + java.time.LocalDate.now() + ".db" , null, 1);
+        super(context, "BikeTracks" + java.time.LocalDateTime.now() + ".db" , null, 1);
 
     }
 

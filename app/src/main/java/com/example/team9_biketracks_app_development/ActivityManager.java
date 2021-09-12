@@ -1,5 +1,6 @@
 package com.example.team9_biketracks_app_development;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -7,6 +8,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -17,6 +19,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 
 /** ActivityManager class. */
@@ -27,16 +31,6 @@ public class ActivityManager extends AppCompatActivity implements SensorEventLis
     private SensorManager sensorManager;
     /** Sensor fields. */
     EditText acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z, mag_x, mag_y, mag_z;
-    /** Store old sensor fields */
-    float old_acc_x = 1.0f;
-    float old_acc_y = 1.0f;
-    float old_acc_z = 1.0f;
-    float old_gyro_x = 1.0f;
-    float old_gyro_y = 1.0f;
-    float old_gyro_z = 1.0f;
-    float old_mag_x = 1.0f;
-    float old_mag_y = 1.0f;
-    float old_mag_z = 1.0f;
     /** Chronometer. */
     private Chronometer mChronometer;
     /** Offset. */
@@ -45,7 +39,12 @@ public class ActivityManager extends AppCompatActivity implements SensorEventLis
     private boolean active;
     /** SensorDatabase instance. */
     private SensorDatabase sensorDatabase;
+    /** Last read time of each sensor. */
+    private LocalDateTime accelerometerReadTime, gyroscopeReadTime, magnetometerReadTime;
+    /** Limit of how often database is written to in seconds. */
+    private final int writeLimit = 1;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +87,9 @@ public class ActivityManager extends AppCompatActivity implements SensorEventLis
             sensorManager.unregisterListener(this);
             finish();
         });
+        accelerometerReadTime = LocalDateTime.now();
+        gyroscopeReadTime = LocalDateTime.now();
+        magnetometerReadTime = LocalDateTime.now();
     }
 
     public void startChronometer(View v) throws IOException {
@@ -116,45 +118,48 @@ public class ActivityManager extends AppCompatActivity implements SensorEventLis
 
     }
 
-    //Get Sensor Data When Changed
+    /** Write sensor data into database.
+     * Only writes if the previous write was long than writeLimit seconds.
+     * @param sensorEvent Sensor event.
+     * */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor sensor = sensorEvent.sensor;
         if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            Log.d(LOGGER, "Accelerometer: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
+            if (ChronoUnit.SECONDS.between(accelerometerReadTime, LocalDateTime.now()) <= writeLimit) {
+                return;
+            }
+            accelerometerReadTime = LocalDateTime.now();
             acc_x.setText(String.valueOf(sensorEvent.values[0]));
             acc_y.setText(String.valueOf(sensorEvent.values[1]));
             acc_z.setText(String.valueOf(sensorEvent.values[2]));
-            if ((old_acc_x != sensorEvent.values[0]) || (old_acc_y != sensorEvent.values[1]) || (old_acc_z != sensorEvent.values[2])){
-                sensorDatabase.insertAccelerometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
-                old_acc_x = sensorEvent.values[0];
-                old_acc_y = sensorEvent.values[1];
-                old_acc_z = sensorEvent.values[2];
-            }
+            sensorDatabase.insertAccelerometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
+            Log.d(LOGGER, "Accelerometer: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
+            return;
         }
         if (sensor.getType() == Sensor.TYPE_GYROSCOPE) {
-            Log.d(LOGGER, "Gyroscope: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
+            if (ChronoUnit.SECONDS.between(gyroscopeReadTime, LocalDateTime.now()) <= writeLimit) {
+                return;
+            }
+            gyroscopeReadTime = LocalDateTime.now();
             gyro_x.setText(String.valueOf(sensorEvent.values[0]));
             gyro_y.setText(String.valueOf(sensorEvent.values[1]));
             gyro_z.setText(String.valueOf(sensorEvent.values[2]));
-            if ((old_gyro_x != sensorEvent.values[0]) || (old_gyro_y != sensorEvent.values[1]) || (old_gyro_z != sensorEvent.values[2])){
-                sensorDatabase.insertGyroscopeData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
-                old_gyro_x = sensorEvent.values[0];
-                old_gyro_y = sensorEvent.values[1];
-                old_gyro_z = sensorEvent.values[2];
-            }
+            sensorDatabase.insertGyroscopeData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
+            Log.d(LOGGER, "Gyroscope: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
+            return;
         }
         if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-            Log.d(LOGGER, "Magnetometer: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
+            if (ChronoUnit.SECONDS.between(magnetometerReadTime, LocalDateTime.now()) <= writeLimit) {
+                return;
+            }
+            magnetometerReadTime = LocalDateTime.now();
             mag_x.setText(String.valueOf(sensorEvent.values[0]));
             mag_y.setText(String.valueOf(sensorEvent.values[1]));
             mag_z.setText(String.valueOf(sensorEvent.values[2]));
-            if ((old_mag_x != sensorEvent.values[0]) || (old_mag_y != sensorEvent.values[1]) || (old_mag_z != sensorEvent.values[2])){
-                sensorDatabase.insertMagnetometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
-                old_mag_x = sensorEvent.values[0];
-                old_mag_y = sensorEvent.values[1];
-                old_mag_z = sensorEvent.values[2];
-            }
+            sensorDatabase.insertMagnetometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
+            Log.d(LOGGER, "Magnetometer: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
         }
     }
 }
