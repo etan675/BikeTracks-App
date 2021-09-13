@@ -161,44 +161,13 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/buttons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/locationValues"
-        android:layout_marginTop="20sp">
-        <Button
-            android:id="@+id/pauseButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20sp"
-            android:text="Pause"
-            android:onClick="pauseChronometer"/>
-
-        <Button
-            android:id="@+id/startButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20sp"
-            android:text="Start"
-            android:onClick="startChronometer"/>
-
-        <Button
-            android:id="@+id/stopButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20sp"
-            android:text="Stop Session" />
-    </LinearLayout>
-
     <Button
         android:id="@+id/finishSessionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20sp"
-        android:layout_below="@id/buttons"
+        android:layout_below="@id/locationValues"
         android:layout_marginLeft="20sp"
+        android:layout_marginTop="62dp"
         android:text="Finish Session" />
 
 </RelativeLayout>

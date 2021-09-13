@@ -78,13 +78,8 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         mChronometer = findViewById(R.id.chronometer);
         mChronometer.setFormat("Time: %s");
         mChronometer.setBase(SystemClock.elapsedRealtime());
-        /**
-        mChronometer.setOnChronometerTickListener(chronometer -> {
-            if ((SystemClock.elapsedRealtime() - mChronometer.getBase()) >= 100000){
-                mChronometer.setBase(SystemClock.elapsedRealtime());
-                Toast.makeText(SensorActivity.this, "Bing!", Toast.LENGTH_SHORT).show();
-            }
-        });*/
+        mChronometer.start();
+
         acc_x = findViewById(R.id.xValue);
         acc_y = findViewById(R.id.yValue);
         acc_z = findViewById(R.id.zValue);
@@ -195,28 +190,6 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
             sensorDatabase.insertGpsData(location.getLatitude(), location.getLongitude());
             Log.d(LOGGER, "GPS: latitude: " + location.getLatitude() + ", longitude: " + location.getLongitude());
         }
-    }
-
-
-    public void startChronometer(View v) throws IOException {
-        if (!active) {
-            mChronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
-            mChronometer.start();
-            active = true;
-        }
-    }
-
-    public void pauseChronometer(View v) throws IOException {
-        if (active) {
-            mChronometer.stop();
-            pauseOffset = SystemClock.elapsedRealtime() - mChronometer.getBase();
-            active = false;
-        }
-    }
-
-    public void stopChronometer(View v) {
-        mChronometer.setBase(SystemClock.elapsedRealtime());
-        pauseOffset = 0;
     }
 
     @Override
