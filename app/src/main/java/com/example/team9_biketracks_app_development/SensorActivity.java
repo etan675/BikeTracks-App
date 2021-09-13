@@ -25,7 +25,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import java.io.IOException;
@@ -47,7 +49,8 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     FusedLocationProviderClient fusedLocationProviderClient;
     /** LocationRequest instance. */
     LocationRequest locationRequest;
-
+    /** LocationCallback instance */
+    LocationCallback locationCallBack;
     /** Sensor fields. */
     EditText acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z, mag_x, mag_y, mag_z, latitude, longitude, altitude;
     /** Store old sensor fields */
@@ -110,7 +113,16 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         locationRequest = LocationRequest.create();
         locationRequest.setInterval(1000 * DEFAULT_UPDATE_INTERVAL);
         locationRequest.setFastestInterval(1000 * FASTEST_UPDATE_INTERVAL);
-        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        /** Observer of the location provider. */
+        locationCallBack = new LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                Location lastLocation = locationResult.getLastLocation();
+                updateUIValues(lastLocation);
+            }
+        };
 
         // register sensors
         if (accelerometer != null) {
@@ -127,13 +139,14 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
             sensorManager.unregisterListener(this);
             finish();
         });
+
         updateGPS();
         accelerometerReadTime = LocalDateTime.now();
         gyroscopeReadTime = LocalDateTime.now();
         magnetometerReadTime = LocalDateTime.now();
     }
 
-    /** Actions after requesting users for permission, overriding AppCompatActivity class method. */
+    /** Actions after requesting users for permission, overriding AppCompatActivity's method. */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -152,7 +165,6 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         get location from fused client provider,
         update UI. */
     private void updateGPS() {
-
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(SensorActivity.this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>(){
@@ -162,6 +174,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
                     updateUIValues(location);
                 }
             });
+            fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallBack,null);
         }
         else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
