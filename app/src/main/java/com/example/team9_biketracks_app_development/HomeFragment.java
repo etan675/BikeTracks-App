@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 public class HomeFragment extends Fragment {
     Spinner spinner;
     Intent sessionIntent;
+    public static String transport;
 
     @Nullable
     @Override
@@ -49,8 +50,8 @@ public class HomeFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String text = parent.getItemAtPosition(position).toString();
-                Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
+                transport = parent.getItemAtPosition(position).toString();
+                Toast.makeText(parent.getContext(), transport, Toast.LENGTH_SHORT).show();
             }
 
             @Override

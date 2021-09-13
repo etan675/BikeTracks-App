@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -20,7 +21,7 @@ public class AllSessionDatabase extends SQLiteOpenHelper {
     /** Table name. */
     private final String TABLE_NAME = "SessionInfo";
     /** Column names. */
-    private final String[] COLUMN_NAMES = {"Date", "StartTime", "EndTime", "VehicleType"};
+    private final String[] COLUMN_NAMES = {"StartTime", "StopTime", "VehicleType"};
 
     /** Constructor for DBHelper.
      * @param context Context.
@@ -36,7 +37,7 @@ public class AllSessionDatabase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " +
                 TABLE_NAME +
-                "(id integer primary key, Date LocalDate, StartTime LocalTime, StopTime LocalDate, VehicleType String)");
+                "(id integer primary key, StartTime LocalDateTime, StopTime LocalDateTime, VehicleType String)");
     }
 
     /** Called when the database needs to be upgraded.
@@ -50,13 +51,15 @@ public class AllSessionDatabase extends SQLiteOpenHelper {
     }
 
     /** Insert data into Accelerometer table.
-     * @param date Session date.
      * @param startTime Session startTime.
+     * @param stopTime Session stopTime
+     * @param vehicleType Session vehicleType.
      * */
-    public void insertDateTime(LocalDate date, LocalTime startTime) {
+    public void insertValues(LocalDateTime startTime, LocalDateTime stopTime, String vehicleType) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_NAMES[0], String.valueOf(date));
-        contentValues.put(COLUMN_NAMES[1], String.valueOf(startTime));
+        contentValues.put(COLUMN_NAMES[0], String.valueOf(startTime));
+        contentValues.put(COLUMN_NAMES[1], String.valueOf(stopTime));
+        contentValues.put(COLUMN_NAMES[2], vehicleType);
         this.getWritableDatabase().insert(TABLE_NAME, null, contentValues);
     }
 

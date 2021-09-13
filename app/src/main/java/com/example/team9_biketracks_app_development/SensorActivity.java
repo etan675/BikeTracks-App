@@ -66,11 +66,14 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     /** Limit of how often database is written to in seconds. */
     private final int writeLimit = 1;
 
+    LocalDateTime startTime;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        startTime = java.time.LocalDateTime.now();
         sensorDatabase = new SensorDatabase(this);
         mChronometer = findViewById(R.id.chronometer);
         mChronometer.setFormat("Time: %s");
@@ -128,6 +131,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         finishSessionButton.setOnClickListener(view -> {
             sensorManager.unregisterListener(this);
             fusedLocationProviderClient.removeLocationUpdates(locationCallBack);
+            MainActivity.endSession(startTime, java.time.LocalDateTime.now());
             finish();
         });
 
@@ -153,8 +157,8 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         }
     }
     /** Get permissions to track GPS,
-        get location from fused client provider,
-        update UI. */
+     get location from fused client provider,
+     update UI. */
     private void updateGPS() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(SensorActivity.this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {

@@ -11,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,10 +22,14 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
+
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, NavigationView.OnNavigationItemSelectedListener {
+
     Intent sessionIntent;
     private DrawerLayout drawer;
-    AllSessionDatabase AllSessionDatabase;
+    static AllSessionDatabase AllSessionDatabase;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -32,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AllSessionDatabase = new AllSessionDatabase(this);
-        AllSessionDatabase.insertDateTime(java.time.LocalDate.now(), java.time.LocalTime.now());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -99,5 +103,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static void endSession(java.time.LocalDateTime startTime, java.time.LocalDateTime stopTime) {
+        AllSessionDatabase.insertValues(startTime, stopTime, HomeFragment.transport);
     }
 }
