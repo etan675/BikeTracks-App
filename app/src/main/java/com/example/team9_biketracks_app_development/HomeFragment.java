@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment;
 
 public class HomeFragment extends Fragment {
     Spinner spinner;
-    Intent sessionIntent;
     public static String transport;
 
     @Nullable

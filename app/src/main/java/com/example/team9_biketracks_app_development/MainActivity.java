@@ -27,7 +27,6 @@ import java.time.LocalDateTime;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, NavigationView.OnNavigationItemSelectedListener {
 
-    Intent sessionIntent;
     private DrawerLayout drawer;
     static AllSessionDatabase AllSessionDatabase;
 
@@ -106,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public static void endSession(java.time.LocalDateTime startTime, java.time.LocalDateTime stopTime) {
-        AllSessionDatabase.insertValues(startTime, stopTime, HomeFragment.transport);
+    public static void endSession(java.time.LocalTime startTime, java.time.LocalTime stopTime) {
+        AllSessionDatabase.insertValues(java.time.LocalDate.now(), startTime, stopTime, HomeFragment.transport);
     }
 }

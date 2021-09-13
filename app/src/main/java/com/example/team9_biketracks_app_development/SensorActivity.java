@@ -32,6 +32,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 
@@ -55,10 +56,6 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     EditText acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z, mag_x, mag_y, mag_z, latitude, longitude, altitude;
     /** Chronometer. */
     private Chronometer mChronometer;
-    /** Offset. */
-    private long pauseOffset;
-    /** active. */
-    private boolean active;
     /** SensorDatabase instance. */
     private SensorDatabase sensorDatabase;
     /** Last read time of each sensor. */
@@ -66,14 +63,14 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     /** Limit of how often database is written to in seconds. */
     private final int writeLimit = 1;
 
-    LocalDateTime startTime;
+    LocalTime startTime;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        startTime = java.time.LocalDateTime.now();
+        startTime = java.time.LocalTime.now();
         sensorDatabase = new SensorDatabase(this);
         mChronometer = findViewById(R.id.chronometer);
         mChronometer.setFormat("Time: %s");
@@ -126,7 +123,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         finishSessionButton.setOnClickListener(view -> {
             sensorManager.unregisterListener(this);
             fusedLocationProviderClient.removeLocationUpdates(locationCallBack);
-            MainActivity.endSession(startTime, java.time.LocalDateTime.now());
+            MainActivity.endSession(startTime, java.time.LocalTime.now());
             finish();
         });
 
