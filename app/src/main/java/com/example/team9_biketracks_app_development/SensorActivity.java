@@ -127,6 +127,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         Button finishSessionButton = findViewById(R.id.finishSessionButton);
         finishSessionButton.setOnClickListener(view -> {
             sensorManager.unregisterListener(this);
+            fusedLocationProviderClient.removeLocationUpdates(locationCallBack);
             finish();
         });
 
@@ -155,7 +156,6 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         get location from fused client provider,
         update UI. */
     private void updateGPS() {
-
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(SensorActivity.this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallBack,null);
@@ -185,14 +185,13 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
             altitude.setText(String.valueOf(location.getAltitude()));
             sensorDatabase.insertGpsData(location.getLatitude(), location.getLongitude(), location.getAltitude());
             Log.d(LOGGER, "GPS: latitude: " + location.getLatitude() + ", longitude: " + location.getLongitude() + ", altitude: " + location.getAltitude());
-        } else {
+        }
+        else {
             altitude.setText("Not available");
             sensorDatabase.insertGpsData(location.getLatitude(), location.getLongitude());
             Log.d(LOGGER, "GPS: latitude: " + location.getLatitude() + ", longitude: " + location.getLongitude());
         }
     }
-
-
 
 
     public void startChronometer(View v) throws IOException {
