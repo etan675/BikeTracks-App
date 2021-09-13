@@ -11,20 +11,22 @@ import androidx.annotation.RequiresApi;
 
 /** Custom Database class. */
 public class SensorDatabase extends SQLiteOpenHelper {
-    /** Database name. */
-    private static final String DATABASE_NAME = "BikeTracks.db";
     /** Accelerometer table name. */
     private final String ACCELEROMETER_TABLE_NAME = "Accelerometer";
     /** Gyroscope table name. */
     private final String GYROSCOPE_TABLE_NAME = "Gyroscope";
     /** Magnetometer table name. */
     private final String MAGNETOMETER_TABLE_NAME = "Magnetometer";
+    /** GPS table name. */
+    private final String GPS_TABLE_NAME = "GPS";
     /** Accelerometer column names. */
     private final String[] ACCELEROMETER_COLUMN_NAMES = {"acc_x", "acc_y", "acc_z"};
     /** Gyroscope column names. */
     private final String[] GYROSCOPE_COLUMN_NAMES = {"gyro_x", "gyro_y", "gyro_z"};
     /** Magnetometer column names. */
     private final String[] MAGNETOMETER_COLUMN_NAMES = {"mag_x", "mag_y", "mag_z"};
+    /** GPS column names. */
+    private final String[] GPS_COLUMN_NAMES = {"latitude", "longitude", "altitude"};
 
     /** Constructor for DBHelper.
      * @param context Context.
@@ -49,6 +51,9 @@ public class SensorDatabase extends SQLiteOpenHelper {
         db.execSQL("create table " +
                 MAGNETOMETER_TABLE_NAME +
                 "(id integer primary key, mag_x float, mag_y float, mag_z float)");
+        db.execSQL("create table " +
+                GPS_TABLE_NAME +
+                "(id integer primary key, latitude float, longitude float, altitude float)");
     }
 
     /** Called when the database needs to be upgraded.
@@ -61,6 +66,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + ACCELEROMETER_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + GYROSCOPE_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + MAGNETOMETER_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + GPS_TABLE_NAME);
         onCreate(db);
     }
 
@@ -102,6 +108,31 @@ public class SensorDatabase extends SQLiteOpenHelper {
         contentValues.put(MAGNETOMETER_COLUMN_NAMES[2], mag_z);
         this.getWritableDatabase().insert(MAGNETOMETER_TABLE_NAME, null, contentValues);
     }
+
+    /** Insert data into GPS table.
+     * @param latitude GPS latitude.
+     * @param longitude GPS longtitude.
+     * @param altitude GPS altitude.
+     * */
+    public void insertGpsData(double latitude, double longitude, double altitude) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(GPS_COLUMN_NAMES[0], latitude);
+        contentValues.put(GPS_COLUMN_NAMES[1], longitude);
+        contentValues.put(GPS_COLUMN_NAMES[2], altitude);
+        this.getWritableDatabase().insert(GPS_TABLE_NAME, null, contentValues);
+    }
+
+    /** Insert data into GPS table.
+     * @param latitude GPS latitude.
+     * @param longitude GPS longtitude.
+     * */
+    public void insertGpsData(double latitude, double longitude) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(GPS_COLUMN_NAMES[0], latitude);
+        contentValues.put(GPS_COLUMN_NAMES[1], longitude);
+        this.getWritableDatabase().insert(GPS_TABLE_NAME, null, contentValues);
+    }
+
 /*
     public Cursor getAccData(int id) {
         SQLiteDatabase db = this.getReadableDatabase();

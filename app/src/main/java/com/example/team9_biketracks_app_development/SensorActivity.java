@@ -53,16 +53,6 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     LocationCallback locationCallBack;
     /** Sensor fields. */
     EditText acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z, mag_x, mag_y, mag_z, latitude, longitude, altitude;
-    /** Store old sensor fields */
-    float old_acc_x = 1.0f;
-    float old_acc_y = 1.0f;
-    float old_acc_z = 1.0f;
-    float old_gyro_x = 1.0f;
-    float old_gyro_y = 1.0f;
-    float old_gyro_z = 1.0f;
-    float old_mag_x = 1.0f;
-    float old_mag_y = 1.0f;
-    float old_mag_z = 1.0f;
     /** Chronometer. */
     private Chronometer mChronometer;
     /** Offset. */
@@ -168,6 +158,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(SensorActivity.this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>(){
+                @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onSuccess(Location location) {
                     // got permissions, need to put values into UI
@@ -184,16 +175,22 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     }
 
     /** Update the UI values for GPS data. */
-    private void updateUIValues(Location location) {
+    private void updateUIValues(Location location){
         latitude.setText(String.valueOf(location.getLatitude()));
         longitude.setText(String.valueOf(location.getLongitude()));
         if (location.hasAltitude()) {
             altitude.setText(String.valueOf(location.getAltitude()));
+            sensorDatabase.insertGpsData(location.getLatitude(), location.getLongitude(), location.getAltitude());
+            Log.d(LOGGER, "GPS: latitude: " + location.getLatitude() + ", longitude: " + location.getLongitude() + ", altitude: " + location.getAltitude());
         }
         else{
             altitude.setText("Not available");
+            sensorDatabase.insertGpsData(location.getLatitude(), location.getLongitude());
+            Log.d(LOGGER, "GPS: latitude: " + location.getLatitude() + ", longitude: " + location.getLongitude());
         }
     }
+
+
 
     public void startChronometer(View v) throws IOException {
         if (!active) {
