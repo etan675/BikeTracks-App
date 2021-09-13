@@ -155,17 +155,20 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         get location from fused client provider,
         update UI. */
     private void updateGPS() {
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(SensorActivity.this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallBack,null);
             fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>(){
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onSuccess(Location location) {
                     // got permissions, need to put values into UI
-                    updateUIValues(location);
+                    if (location != null) {
+                        updateUIValues(location);
+                    }
                 }
             });
-            fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallBack,null);
         }
         else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -182,13 +185,13 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
             altitude.setText(String.valueOf(location.getAltitude()));
             sensorDatabase.insertGpsData(location.getLatitude(), location.getLongitude(), location.getAltitude());
             Log.d(LOGGER, "GPS: latitude: " + location.getLatitude() + ", longitude: " + location.getLongitude() + ", altitude: " + location.getAltitude());
-        }
-        else{
+        } else {
             altitude.setText("Not available");
             sensorDatabase.insertGpsData(location.getLatitude(), location.getLongitude());
             Log.d(LOGGER, "GPS: latitude: " + location.getLatitude() + ", longitude: " + location.getLongitude());
         }
     }
+
 
 
 
