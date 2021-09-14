@@ -66,6 +66,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     private LocalDateTime accelerometerReadTime, gyroscopeReadTime, magnetometerReadTime;
     /** Limit of how often database is written to in seconds. */
     private final int writeLimit = 1;
+    String activityType = HomeFragment.transport;
 
     LocalTime startTime;
 
@@ -184,13 +185,13 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         longitude.setText(String.valueOf(location.getLongitude()));
         if (location.hasAltitude()) {
             altitude.setText(String.valueOf(location.getAltitude()));
-            sensorDatabase.insertGpsData(java.time.LocalTime.now(), location.getLatitude() - gps_lat, location.getLongitude() - gps_long, location.getAltitude() - gps_alt, location.getSpeed(), location.getBearing(), location.getAccuracy());
+            sensorDatabase.insertGpsData(java.time.LocalTime.now(), location.getLatitude() - gps_lat, location.getLongitude() - gps_long, location.getAltitude() - gps_alt, location.getSpeed(), location.getBearing(), location.getAccuracy(), activityType);
             Log.d(LOGGER, "GPS: latitude: " + location.getLatitude() + ", longitude: " + location.getLongitude() + ", altitude: " + location.getAltitude());
             gps_alt = (float) location.getAltitude();
         }
         else {
             altitude.setText("Not available");
-            sensorDatabase.insertGpsData(java.time.LocalTime.now(),location.getLatitude() - gps_lat, location.getLongitude() - gps_long, location.getSpeed(), location.getBearing(), location.getAccuracy());
+            sensorDatabase.insertGpsData(java.time.LocalTime.now(),location.getLatitude() - gps_lat, location.getLongitude() - gps_long, location.getSpeed(), location.getBearing(), location.getAccuracy(), activityType);
             Log.d(LOGGER, "GPS: latitude: " + location.getLatitude() + ", longitude: " + location.getLongitude());
         }
         gps_lat = (float) location.getLatitude();
@@ -218,7 +219,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
             acc_x.setText(String.valueOf(sensorEvent.values[0]));
             acc_y.setText(String.valueOf(sensorEvent.values[1]));
             acc_z.setText(String.valueOf(sensorEvent.values[2]));
-            sensorDatabase.insertAccelerometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
+            sensorDatabase.insertAccelerometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2], activityType);
             Log.d(LOGGER, "Accelerometer: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
             return;
         }
@@ -230,7 +231,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
             gyro_x.setText(String.valueOf(sensorEvent.values[0]));
             gyro_y.setText(String.valueOf(sensorEvent.values[1]));
             gyro_z.setText(String.valueOf(sensorEvent.values[2]));
-            sensorDatabase.insertGyroscopeData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
+            sensorDatabase.insertGyroscopeData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2], activityType);
             Log.d(LOGGER, "Gyroscope: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
             return;
         }
@@ -242,7 +243,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
             mag_x.setText(String.valueOf(sensorEvent.values[0]));
             mag_y.setText(String.valueOf(sensorEvent.values[1]));
             mag_z.setText(String.valueOf(sensorEvent.values[2]));
-            sensorDatabase.insertMagnetometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
+            sensorDatabase.insertMagnetometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2], activityType);
             Log.d(LOGGER, "Magnetometer: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
         }
     }
