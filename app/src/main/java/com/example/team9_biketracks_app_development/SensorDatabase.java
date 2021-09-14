@@ -8,6 +8,8 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import java.time.LocalTime;
+
 
 /** Custom Database class. */
 public class SensorDatabase extends SQLiteOpenHelper {
@@ -26,7 +28,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
     /** Magnetometer column names. */
     private final String[] MAGNETOMETER_COLUMN_NAMES = {"mag_x", "mag_y", "mag_z"};
     /** GPS column names. */
-    private final String[] GPS_COLUMN_NAMES = {"latitude", "longitude", "altitude"};
+    private final String[] GPS_COLUMN_NAMES = {"timestamp", "gps_lat_increment", "gps_long_increment", "gps_alt_increment", "gps_speed", "gps_bearing", "gps_accuracy"};
 
     /** Constructor for DBHelper.
      * @param context Context.
@@ -53,7 +55,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
                 "(id integer primary key, mag_x float, mag_y float, mag_z float)");
         db.execSQL("create table " +
                 GPS_TABLE_NAME +
-                "(id integer primary key, latitude float, longitude float, altitude float)");
+                "(id integer primary key, timestamp LocalTime, gps_lat_increment float, gps_long_increment float, gps_alt_increment float, gps_speed float, gps_bearing float, gps_accuracy float)");
     }
 
     /** Called when the database needs to be upgraded.
@@ -114,11 +116,15 @@ public class SensorDatabase extends SQLiteOpenHelper {
      * @param longitude GPS longtitude.
      * @param altitude GPS altitude.
      * */
-    public void insertGpsData(double latitude, double longitude, double altitude) {
+    public void insertGpsData(LocalTime timestamp, double latitude, double longitude, double altitude, float speed, float bearing, float accuracy) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(GPS_COLUMN_NAMES[0], latitude);
-        contentValues.put(GPS_COLUMN_NAMES[1], longitude);
-        contentValues.put(GPS_COLUMN_NAMES[2], altitude);
+        contentValues.put(GPS_COLUMN_NAMES[0], String.valueOf(timestamp));
+        contentValues.put(GPS_COLUMN_NAMES[1], latitude);
+        contentValues.put(GPS_COLUMN_NAMES[2], longitude);
+        contentValues.put(GPS_COLUMN_NAMES[3], altitude);
+        contentValues.put(GPS_COLUMN_NAMES[4], speed);
+        contentValues.put(GPS_COLUMN_NAMES[5], bearing);
+        contentValues.put(GPS_COLUMN_NAMES[6], accuracy);
         this.getWritableDatabase().insert(GPS_TABLE_NAME, null, contentValues);
     }
 
@@ -126,10 +132,15 @@ public class SensorDatabase extends SQLiteOpenHelper {
      * @param latitude GPS latitude.
      * @param longitude GPS longtitude.
      * */
-    public void insertGpsData(double latitude, double longitude) {
+
+    public void insertGpsData(LocalTime timestamp, double latitude, double longitude, float speed, float bearing, float accuracy) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(GPS_COLUMN_NAMES[0], latitude);
-        contentValues.put(GPS_COLUMN_NAMES[1], longitude);
+        contentValues.put(GPS_COLUMN_NAMES[0], String.valueOf(timestamp));
+        contentValues.put(GPS_COLUMN_NAMES[1], latitude);
+        contentValues.put(GPS_COLUMN_NAMES[2], longitude);
+        contentValues.put(GPS_COLUMN_NAMES[4], speed);
+        contentValues.put(GPS_COLUMN_NAMES[5], bearing);
+        contentValues.put(GPS_COLUMN_NAMES[6], accuracy);
         this.getWritableDatabase().insert(GPS_TABLE_NAME, null, contentValues);
     }
 

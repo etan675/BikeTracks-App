@@ -52,6 +52,10 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     LocationRequest locationRequest;
     /** LocationCallback instance */
     LocationCallback locationCallBack;
+    /** Store old gps values */
+    float gps_alt = 0.0f;
+    float gps_long = 0.0f;
+    float gps_lat = 0.0f;
     /** Sensor fields. */
     EditText acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z, mag_x, mag_y, mag_z, latitude, longitude, altitude;
     /** Chronometer. */
@@ -174,19 +178,23 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     }
 
     /** Update the UI values for GPS data. */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void updateUIValues(Location location){
         latitude.setText(String.valueOf(location.getLatitude()));
         longitude.setText(String.valueOf(location.getLongitude()));
         if (location.hasAltitude()) {
             altitude.setText(String.valueOf(location.getAltitude()));
-            sensorDatabase.insertGpsData(location.getLatitude(), location.getLongitude(), location.getAltitude());
+            sensorDatabase.insertGpsData(java.time.LocalTime.now(), location.getLatitude() - gps_lat, location.getLongitude() - gps_long, location.getAltitude() - gps_alt, location.getSpeed(), location.getBearing(), location.getAccuracy());
             Log.d(LOGGER, "GPS: latitude: " + location.getLatitude() + ", longitude: " + location.getLongitude() + ", altitude: " + location.getAltitude());
+            gps_alt = (float) location.getAltitude();
         }
         else {
             altitude.setText("Not available");
-            sensorDatabase.insertGpsData(location.getLatitude(), location.getLongitude());
+            sensorDatabase.insertGpsData(java.time.LocalTime.now(),location.getLatitude() - gps_lat, location.getLongitude() - gps_long, location.getSpeed(), location.getBearing(), location.getAccuracy());
             Log.d(LOGGER, "GPS: latitude: " + location.getLatitude() + ", longitude: " + location.getLongitude());
         }
+        gps_lat = (float) location.getLatitude();
+        gps_long = (float) location.getLongitude();
     }
 
     @Override
