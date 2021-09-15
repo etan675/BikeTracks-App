@@ -219,7 +219,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
             acc_x.setText(String.valueOf(sensorEvent.values[0]));
             acc_y.setText(String.valueOf(sensorEvent.values[1]));
             acc_z.setText(String.valueOf(sensorEvent.values[2]));
-            sensorDatabase.insertAccelerometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2], activityType);
+            sensorDatabase.insertAccelerometerData(java.time.LocalTime.now(), sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2], activityType);
             Log.d(LOGGER, "Accelerometer: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
             return;
         }
@@ -231,7 +231,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
             gyro_x.setText(String.valueOf(sensorEvent.values[0]));
             gyro_y.setText(String.valueOf(sensorEvent.values[1]));
             gyro_z.setText(String.valueOf(sensorEvent.values[2]));
-            sensorDatabase.insertGyroscopeData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2], activityType);
+            sensorDatabase.insertGyroscopeData(java.time.LocalTime.now(), sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2], activityType);
             Log.d(LOGGER, "Gyroscope: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
             return;
         }
@@ -243,7 +243,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
             mag_x.setText(String.valueOf(sensorEvent.values[0]));
             mag_y.setText(String.valueOf(sensorEvent.values[1]));
             mag_z.setText(String.valueOf(sensorEvent.values[2]));
-            sensorDatabase.insertMagnetometerData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2], activityType);
+            sensorDatabase.insertMagnetometerData(java.time.LocalTime.now(), sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2], activityType);
             Log.d(LOGGER, "Magnetometer: x: " + sensorEvent.values[0] + ", y: " + sensorEvent.values[1] + ", z: " + sensorEvent.values[2]);
         }
     }

@@ -22,11 +22,11 @@ public class SensorDatabase extends SQLiteOpenHelper {
     /** GPS table name. */
     private final String GPS_TABLE_NAME = "GPS";
     /** Accelerometer column names. */
-    private final String[] ACCELEROMETER_COLUMN_NAMES = {"acc_x", "acc_y", "acc_z", "activity"};
+    private final String[] ACCELEROMETER_COLUMN_NAMES = {"timestamp", "acc_x", "acc_y", "acc_z", "activity"};
     /** Gyroscope column names. */
-    private final String[] GYROSCOPE_COLUMN_NAMES = {"gyro_x", "gyro_y", "gyro_z", "activity"};
+    private final String[] GYROSCOPE_COLUMN_NAMES = {"timestamp", "gyro_x", "gyro_y", "gyro_z", "activity"};
     /** Magnetometer column names. */
-    private final String[] MAGNETOMETER_COLUMN_NAMES = {"mag_x", "mag_y", "mag_z", "activity"};
+    private final String[] MAGNETOMETER_COLUMN_NAMES = {"timestamp", "mag_x", "mag_y", "mag_z", "activity"};
     /** GPS column names. */
     private final String[] GPS_COLUMN_NAMES = {"timestamp", "gps_lat_increment", "gps_long_increment", "gps_alt_increment", "gps_speed", "gps_bearing", "gps_accuracy", "activity"};
 
@@ -46,13 +46,13 @@ public class SensorDatabase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " +
                 ACCELEROMETER_TABLE_NAME +
-                "(id integer primary key, acc_x float, acc_y float, acc_z float, activity String)");
+                "(id integer primary key, timestamp LocalTime, acc_x float, acc_y float, acc_z float, activity String)");
         db.execSQL("create table " +
                 GYROSCOPE_TABLE_NAME +
-                "(id integer primary key, gyro_x float, gyro_y float, gyro_z float, activity String)");
+                "(id integer primary key, timestamp LocalTime, gyro_x float, gyro_y float, gyro_z float, activity String)");
         db.execSQL("create table " +
                 MAGNETOMETER_TABLE_NAME +
-                "(id integer primary key, mag_x float, mag_y float, mag_z float, activity String)");
+                "(id integer primary key, timestamp LocalTime, mag_x float, mag_y float, mag_z float, activity String)");
         db.execSQL("create table " +
                 GPS_TABLE_NAME +
                 "(id integer primary key, timestamp LocalTime, gps_lat_increment float, gps_long_increment float, gps_alt_increment float, gps_speed float, gps_bearing float, gps_accuracy float, activity String)");
@@ -77,12 +77,13 @@ public class SensorDatabase extends SQLiteOpenHelper {
      * @param acc_y Accelerometer y value.
      * @param acc_z Accelerometer z value.
      * */
-    public void insertAccelerometerData(float acc_x, float acc_y, float acc_z, String activity) {
+    public void insertAccelerometerData(LocalTime timestamp, float acc_x, float acc_y, float acc_z, String activity) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ACCELEROMETER_COLUMN_NAMES[0], acc_x);
-        contentValues.put(ACCELEROMETER_COLUMN_NAMES[1], acc_y);
-        contentValues.put(ACCELEROMETER_COLUMN_NAMES[2], acc_z);
-        contentValues.put(ACCELEROMETER_COLUMN_NAMES[3], activity);
+        contentValues.put(ACCELEROMETER_COLUMN_NAMES[0], String.valueOf(timestamp));
+        contentValues.put(ACCELEROMETER_COLUMN_NAMES[1], acc_x);
+        contentValues.put(ACCELEROMETER_COLUMN_NAMES[2], acc_y);
+        contentValues.put(ACCELEROMETER_COLUMN_NAMES[3], acc_z);
+        contentValues.put(ACCELEROMETER_COLUMN_NAMES[4], activity);
         this.getWritableDatabase().insert(ACCELEROMETER_TABLE_NAME, null, contentValues);
     }
 
@@ -91,12 +92,13 @@ public class SensorDatabase extends SQLiteOpenHelper {
      * @param gyro_y Gyroscope y value.
      * @param gyro_z Gyroscope z value.
      * */
-    public void insertGyroscopeData(float gyro_x, float gyro_y, float gyro_z, String activity) {
+    public void insertGyroscopeData(LocalTime timestamp, float gyro_x, float gyro_y, float gyro_z, String activity) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(GYROSCOPE_COLUMN_NAMES[0], gyro_x);
-        contentValues.put(GYROSCOPE_COLUMN_NAMES[1], gyro_y);
-        contentValues.put(GYROSCOPE_COLUMN_NAMES[2], gyro_z);
-        contentValues.put(GYROSCOPE_COLUMN_NAMES[3], activity);
+        contentValues.put(GYROSCOPE_COLUMN_NAMES[0], String.valueOf(timestamp));
+        contentValues.put(GYROSCOPE_COLUMN_NAMES[1], gyro_x);
+        contentValues.put(GYROSCOPE_COLUMN_NAMES[2], gyro_y);
+        contentValues.put(GYROSCOPE_COLUMN_NAMES[3], gyro_z);
+        contentValues.put(GYROSCOPE_COLUMN_NAMES[4], activity);
         this.getWritableDatabase().insert(GYROSCOPE_TABLE_NAME, null, contentValues);
     }
 
@@ -105,12 +107,13 @@ public class SensorDatabase extends SQLiteOpenHelper {
      * @param mag_y Magnetometer y value.
      * @param mag_z Magnetometer z value.
      * */
-    public void insertMagnetometerData(float mag_x, float mag_y, float mag_z, String activity) {
+    public void insertMagnetometerData(LocalTime timestamp, float mag_x, float mag_y, float mag_z, String activity) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(MAGNETOMETER_COLUMN_NAMES[0], mag_x);
-        contentValues.put(MAGNETOMETER_COLUMN_NAMES[1], mag_y);
-        contentValues.put(MAGNETOMETER_COLUMN_NAMES[2], mag_z);
-        contentValues.put(MAGNETOMETER_COLUMN_NAMES[3], activity);
+        contentValues.put(MAGNETOMETER_COLUMN_NAMES[0], String.valueOf(timestamp));
+        contentValues.put(MAGNETOMETER_COLUMN_NAMES[1], mag_x);
+        contentValues.put(MAGNETOMETER_COLUMN_NAMES[2], mag_y);
+        contentValues.put(MAGNETOMETER_COLUMN_NAMES[3], mag_z);
+        contentValues.put(MAGNETOMETER_COLUMN_NAMES[4], activity);
         this.getWritableDatabase().insert(MAGNETOMETER_TABLE_NAME, null, contentValues);
     }
 
