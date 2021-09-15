@@ -8,22 +8,20 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.team9_biketracks_app_development.fragment.HelpFragment;
+import com.example.team9_biketracks_app_development.fragment.HomeFragment;
+import com.example.team9_biketracks_app_development.fragment.LogFragment;
+import com.example.team9_biketracks_app_development.fragment.ProfileFragment;
+import com.example.team9_biketracks_app_development.fragment.RouteFragment;
+import com.example.team9_biketracks_app_development.fragment.SettingsFragment;
 import com.google.android.material.navigation.NavigationView;
-
-import java.io.IOException;
-import java.time.LocalDateTime;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, NavigationView.OnNavigationItemSelectedListener {
 

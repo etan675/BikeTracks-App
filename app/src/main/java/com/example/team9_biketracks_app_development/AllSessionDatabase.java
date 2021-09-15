@@ -2,18 +2,11 @@ package com.example.team9_biketracks_app_development;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Build;
-import androidx.annotation.RequiresApi;
-import com.google.android.material.tabs.TabLayout;
 
-import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 
 /** Custom Database class for general information of all sessions . */
 public class AllSessionDatabase extends SQLiteOpenHelper {

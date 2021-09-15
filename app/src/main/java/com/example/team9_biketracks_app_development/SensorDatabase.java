@@ -36,7 +36,6 @@ public class SensorDatabase extends SQLiteOpenHelper {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public SensorDatabase(Context context) {
         super(context, "BikeTracks" + java.time.LocalDateTime.now() + ".db" , null, 1);
-
     }
 
     /** Called when the database is created for the first time.
@@ -151,35 +150,4 @@ public class SensorDatabase extends SQLiteOpenHelper {
         contentValues.put(GPS_COLUMN_NAMES[7], activity);
         this.getWritableDatabase().insert(GPS_TABLE_NAME, null, contentValues);
     }
-
-/*
-    public Cursor getAccData(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from " +
-                ACCELEROMETER_TABLE_NAME +
-                " where id=" + id + "",
-                null );
-        return res;
-    }
-
-    public int numberOfAccRows(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        int numRows = (int) DatabaseUtils.queryNumEntries(db, ACCELEROMETER_TABLE_NAME);
-        return numRows;
-    }
-
-    public ArrayList<String> getAllAccData() {
-        ArrayList<String> array_list = new ArrayList<String>();
-
-        //hp = new HashMap();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from " + ACCELEROMETER_TABLE_NAME, null );
-        res.moveToFirst();
-
-        while(!res.isAfterLast()){
-            array_list.add(res.getString(res.getColumnIndex(ACCELEROMETER_COLUMN_NAMES[0])));
-            res.moveToNext();
-        }
-        return array_list;
-    }*/
 }
