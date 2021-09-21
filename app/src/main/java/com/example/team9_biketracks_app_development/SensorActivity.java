@@ -115,13 +115,13 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
         // register sensors
         if (accelerometer != null) {
-            sensorManager.registerListener(SensorActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(SensorActivity.this, accelerometer, 1000000);
         }
         if (gyroscope != null) {
-            sensorManager.registerListener(SensorActivity.this, gyroscope, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(SensorActivity.this, gyroscope, 1000000);
         }
         if (magnetometer != null) {
-            sensorManager.registerListener(SensorActivity.this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(SensorActivity.this, magnetometer, 1000000);
         }
         Button finishSessionButton = findViewById(R.id.finishSessionButton);
         finishSessionButton.setOnClickListener(view -> {
