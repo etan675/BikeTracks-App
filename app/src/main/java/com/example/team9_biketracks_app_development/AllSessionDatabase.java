@@ -8,22 +8,23 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-/** Custom Database class for general information of all sessions . */
+/** Custom Database class for general information of all sessions. */
 public class AllSessionDatabase extends SQLiteOpenHelper {
+    /** Database name. */
     private static final String DATABASE_NAME = "Sessions.db";
     /** Table name. */
     private final String TABLE_NAME = "SessionInfo";
     /** Column names. */
     private final String[] COLUMN_NAMES = {"Date", "StartTime", "StopTime", "VehicleType"};
 
-    /** Constructor for DBHelper.
+    /** Constructor.
      * @param context Context.
      * */
     public AllSessionDatabase(Context context) {
         super(context, DATABASE_NAME , null, 1);
     }
 
-    /** Called when the database is created for the first time.
+    /** Create database.
      * @param db Given database.
      * */
     @Override
@@ -33,7 +34,7 @@ public class AllSessionDatabase extends SQLiteOpenHelper {
                 "(id integer primary key, Date LocalDate, StartTime LocalTime, StopTime LocalTime, VehicleType String)");
     }
 
-    /** Called when the database needs to be upgraded.
+    /** Upgrade database.
      * @param db Given database.
      * @param oldVersion Old database version.
      * @param newVersion New database version.
@@ -43,10 +44,10 @@ public class AllSessionDatabase extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
     }
 
-    /** Insert data into Accelerometer table.
-     * @param startTime Session startTime.
-     * @param stopTime Session stopTime
-     * @param vehicleType Session vehicleType.
+    /** Insert data into table.
+     * @param startTime Session start time.
+     * @param stopTime Session stop time
+     * @param vehicleType Session vehicle type.
      * */
     public void insertValues(LocalDate Date, LocalTime startTime, LocalTime stopTime, String vehicleType) {
         ContentValues contentValues = new ContentValues();

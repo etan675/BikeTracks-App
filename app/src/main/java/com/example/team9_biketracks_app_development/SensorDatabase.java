@@ -30,7 +30,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
     /** GPS column names. */
     private final String[] GPS_COLUMN_NAMES = {"timestamp", "gps_lat_increment", "gps_long_increment", "gps_alt_increment", "gps_speed", "gps_bearing", "gps_accuracy", "activity"};
 
-    /** Constructor for DBHelper.
+    /** Constructor.
      * @param context Context.
      * */
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -38,7 +38,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
         super(context, "BikeTracks" + java.time.LocalDateTime.now() + ".db" , null, 1);
     }
 
-    /** Called when the database is created for the first time.
+    /** Create database.
      * @param db Given database.
      * */
     @Override
@@ -57,7 +57,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
                 "(id integer primary key, timestamp LocalTime, gps_lat_increment float, gps_long_increment float, gps_alt_increment float, gps_speed float, gps_bearing float, gps_accuracy float, activity String)");
     }
 
-    /** Called when the database needs to be upgraded.
+    /** Upgrade database.
      * @param db Given database.
      * @param oldVersion Old database version.
      * @param newVersion New database version.
@@ -118,7 +118,7 @@ public class SensorDatabase extends SQLiteOpenHelper {
 
     /** Insert data into GPS table.
      * @param latitude GPS latitude.
-     * @param longitude GPS longtitude.
+     * @param longitude GPS longitude.
      * @param altitude GPS altitude.
      * */
     public void insertGpsData(LocalTime timestamp, double latitude, double longitude, double altitude, float speed, float bearing, float accuracy, String activity) {

@@ -104,7 +104,6 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         locationRequest.setInterval(1000 * DEFAULT_UPDATE_INTERVAL);
         locationRequest.setFastestInterval(1000 * FASTEST_UPDATE_INTERVAL);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        /** Observer of the location provider. */
         locationCallBack = new LocationCallback() {
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
@@ -142,20 +141,19 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case FINE_LOCATION_PERMISSION:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    updateGPS();
-                } else {
-                    Toast.makeText(this, "This app requires location permission to be granted", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-                break;
+        if (requestCode == FINE_LOCATION_PERMISSION) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                updateGPS();
+            } else {
+                Toast.makeText(this, "This app requires location permission to be granted", Toast.LENGTH_SHORT).show();
+                finish();
+            }
         }
     }
+
     /** Get permissions to track GPS,
-     get location from fused client provider,
-     update UI. */
+     * get location from fused client provider,
+     * update UI. */
     private void updateGPS() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(SensorActivity.this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -204,7 +202,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     }
 
     /** Write sensor data into database.
-     * Only writes if the previous write was long than writeLimit seconds.
+     * Only writes if the previous write was longer than writeLimit seconds.
      * @param sensorEvent Sensor event.
      * */
     @RequiresApi(api = Build.VERSION_CODES.O)
