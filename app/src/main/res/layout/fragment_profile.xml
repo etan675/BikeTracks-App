@@ -24,7 +24,8 @@
         android:gravity="center"
         android:paddingTop="10dp"
         android:text="@string/username"
-        android:textSize="22sp"
+        android:textColor="@android:color/black"
+        android:textSize="28sp"
         android:textStyle="bold" />
 
     <TextView
@@ -35,7 +36,7 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:text="@string/user_bio"
-        android:textSize="18sp"
+        android:textSize="19sp"
         android:textStyle="italic" />
 
     <TextView
@@ -45,7 +46,7 @@
         android:paddingLeft="105dp"
         android:paddingTop="250dp"
         android:text="@string/logged"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/coral"
         android:textSize="35sp"
         android:textStyle="bold"
         tools:ignore="RtlHardcoded,RtlSymmetry" />
@@ -57,7 +58,7 @@
         android:paddingLeft="250dp"
         android:paddingTop="250dp"
         android:text="@string/point"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/coral"
         android:textSize="35sp"
         android:textStyle="bold"
         tools:ignore="RtlHardcoded,RtlSymmetry" />
@@ -68,6 +69,7 @@
         android:paddingLeft="65dp"
         android:paddingTop="290dp"
         android:text="@string/journeys_logged"
+        android:textColor="@android:color/black"
         android:textAlignment="center"
         android:textSize="22sp"
         tools:ignore="RtlHardcoded,RtlSymmetry" />
@@ -79,6 +81,7 @@
         android:paddingTop="290dp"
         android:text="@string/points_accum"
         android:textAlignment="center"
+        android:textColor="@android:color/black"
         android:textSize="22sp"
         tools:ignore="RtlHardcoded,RtlSymmetry" />
 

@@ -20,4 +20,7 @@
     <string name="point">200</string>
     <string name="journeys_logged">Journeys \n logged</string>
     <string name="points_accum">Points \n accumulated</string>
+
+    <string name="basic"><u>Basic Settings</u></string>
+    <string name="advanced"><u>Advanced Settings</u></string>
 </resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory android:title="@string/basic" android:layout="@layout/fragment_settings">
+    <EditTextPreference
+        android:icon="@drawable/ic_profile"
+        android:dialogTitle="Name..."
+        android:key="text"
+        android:summary="Click to edit"
+        android:title="Edit Name"/>
+
+    <ListPreference
+        android:icon="@drawable/ic_data"
+        android:dialogTitle="Select duration"
+        android:entries="@array/settings_list_preference_titles"
+        android:entryValues="@array/settings_list_preference_values"
+        android:key="list"
+        android:summary="Click to show time intervals"
+        android:title="Data Preference" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/advanced" android:layout="@layout/fragment_settings">
+    <SwitchPreference
+        android:icon="@drawable/ic_run"
+        android:key="switch_foreground"
+        android:title="Keep App Running in Foreground"
+        android:defaultValue="true"/>
+
+    <SwitchPreference
+        android:icon="@drawable/ic_gps"
+        android:key="switch_gps"
+        android:title="GPS Preference"
+        android:summary="Allow GPS location while in use"
+        android:defaultValue="true"/>
+
+    <SwitchPreferenceCompat
+        android:icon="@drawable/ic_notification"
+        app:key="notifications"
+        app:title="Enable notifications"/>
+    </PreferenceCategory>
+
+    <Preference
+        app:allowDividerAbove="true"
+
+        android:icon="@drawable/ic_privacy"
+        app:key="privacy"
+        app:title="Privacy policy" />
+    <Preference
+        android:icon="@drawable/ic_feedback"
+        app:key="feedback"
+        app:title="Send feedback"
+        app:summary="Report technical issues or suggest new features"/>
+
+
+</PreferenceScreen>
