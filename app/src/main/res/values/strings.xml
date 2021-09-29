@@ -12,4 +12,12 @@
         <item>Walk</item>
         <item>Car</item>
     </string-array>
+
+    <string name="profile_picture">Profile Picture</string>
+    <string name="username">Homer Simpson</string>
+    <string name="user_bio">I love eating donuts so I should exercise more</string>
+    <string name="logged">4</string>
+    <string name="point">200</string>
+    <string name="journeys_logged">Journeys \n logged</string>
+    <string name="points_accum">Points \n accumulated</string>
 </resources>
