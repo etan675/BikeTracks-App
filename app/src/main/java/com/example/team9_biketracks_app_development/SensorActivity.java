@@ -137,7 +137,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         magnetometerReadTime = LocalDateTime.now();
     }
 
-    /** Actions after requesting users for permission, overriding AppCompatActivity's method. */
+    /** Actions after requesting user for permission */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -151,8 +151,8 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         }
     }
 
-    /** Get permissions to track GPS,
-     * get location from fused client provider,
+    /** Check if we got permissions to track GPS,
+     * get location from fused location provider,
      * update UI. */
     private void updateGPS() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(SensorActivity.this);
@@ -162,7 +162,6 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onSuccess(Location location) {
-                    // got permissions, need to put values into UI
                     if (location != null) {
                         updateUIValues(location);
                     }
