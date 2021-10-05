@@ -17,7 +17,7 @@
         android:layout_width="200sp"
         android:layout_height="wrap_content"
         android:layout_below="@id/chronometer"
-        android:text="Accelerometer" />
+        android:text="@string/Accelerometer" />
     <LinearLayout
         android:id="@+id/accValues"
         android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
     <TextView
         android:id="@+id/gyro"
         android:layout_width="200sp"
-        android:text="Gyroscope"
+        android:text="@string/Gyroscope"
         android:layout_height="wrap_content"
         android:layout_marginTop="20sp"
         android:layout_below="@+id/accValues"/>
@@ -82,7 +82,7 @@
     <TextView
         android:id="@+id/mag"
         android:layout_width="200sp"
-        android:text="Magno"
+        android:text="@string/Magno"
         android:layout_height="wrap_content"
         android:layout_marginTop="20sp"
         android:layout_below="@+id/gyroValues"/>
@@ -122,19 +122,19 @@
             android:id="@+id/latitudeLabel"
             android:layout_width="115sp"
             android:layout_height="wrap_content"
-            android:text="Latitude"/>
+            android:text="@string/Latitude"/>
 
         <TextView
             android:id="@+id/longitudeLabel"
             android:layout_width="115sp"
             android:layout_height="wrap_content"
-            android:text="Longitude"/>
+            android:text="@string/Longitude"/>
 
         <TextView
             android:id="@+id/altitudeLabel"
             android:layout_width="115sp"
             android:layout_height="wrap_content"
-            android:text="Altitude"/>
+            android:text="@string/Altitude"/>
 
     </LinearLayout>
 
@@ -172,7 +172,7 @@
         android:id="@+id/sensorLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cell Tower + Wifi (Power Saving)"
+        android:text="@string/Cell"
         android:layout_below="@id/gpsWifiSwitch" />
 
 
@@ -183,6 +183,6 @@
         android:layout_below="@id/sensorLabel"
         android:layout_marginLeft="20sp"
         android:layout_marginTop="62dp"
-        android:text="Finish Session" />
+        android:text="@string/FinishSession" />
 
 </RelativeLayout>

@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
-        android:text="FAQs"
+        android:text="@string/FAQs"
         android:textAlignment="center"
         android:textSize="30sp"
         android:layout_centerHorizontal="true"/>
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/faqs"
         android:paddingTop="20dp"
-        android:text="Contact Support"
+        android:text="@string/ContactSupport"
         android:textAlignment="center"
         android:textSize="30sp"
         android:layout_centerHorizontal="true"/>
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/support"
         android:paddingTop="20dp"
-        android:text="Join Beta Program"
+        android:text="@string/JoinBetaProgram"
         android:textAlignment="center"
         android:textSize="30sp"
         android:layout_centerHorizontal="true"/>

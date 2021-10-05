@@ -16,13 +16,13 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Team 9 App Development"
+        android:text="@string/Team9AppDevelopment"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bike Tracks"/>
+        android:text="@string/BikeTracks"/>
 
 
 </LinearLayout>
