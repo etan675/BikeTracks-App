@@ -1,15 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/darker_gray">
+    android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Help"
+        android:id="@+id/faqs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:text="@string/FAQs"
+        android:textAlignment="center"
         android:textSize="30sp"
         android:layout_centerHorizontal="true"/>
+
+    <View
+        android:layout_width="420dp"
+        android:layout_height="2dp"
+        android:background="@color/violet"
+        android:layout_marginTop="60dp" />
+
+
+    <TextView
+        android:id="@+id/support"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/faqs"
+        android:paddingTop="20dp"
+        android:text="@string/ContactSupport"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:layout_centerHorizontal="true"/>
+
+    <View
+        android:layout_width="420dp"
+        android:layout_height="2dp"
+        android:background="@color/violet"
+        android:layout_marginTop="120dp" />
+
+    <TextView
+        android:id="@+id/beta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/support"
+        android:paddingTop="20dp"
+        android:text="@string/JoinBetaProgram"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:layout_centerHorizontal="true"/>
+
+    <View
+        android:layout_width="420dp"
+        android:layout_height="2dp"
+        android:background="@color/violet"
+        android:layout_marginTop="180dp"
+        />
 
 
 </RelativeLayout>

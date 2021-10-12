@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.content.Context;
+ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -18,9 +18,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.team9_biketracks_app_development.fragment.HomeFragment;
@@ -58,6 +61,9 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     float gps_lat = 0.0f;
     /** Sensor fields. */
     EditText acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z, mag_x, mag_y, mag_z, latitude, longitude, altitude;
+    Switch gpsWifiSwitch;
+    TextView sensorLabel;
+
     /** Chronometer. */
     private Chronometer mChronometer;
     /** SensorDatabase instance. */
@@ -94,16 +100,12 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         latitude = findViewById(R.id.latitudeValue);
         longitude = findViewById(R.id.longitudeValue);
         altitude = findViewById(R.id.altitudeValue);
-
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        Sensor gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-        Sensor magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        sensorLabel = findViewById(R.id.sensorLabel);
+        gpsWifiSwitch = findViewById(R.id.gpsWifiSwitch);
 
         locationRequest = LocationRequest.create();
         locationRequest.setInterval(1000 * DEFAULT_UPDATE_INTERVAL);
         locationRequest.setFastestInterval(1000 * FASTEST_UPDATE_INTERVAL);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationCallBack = new LocationCallback() {
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
@@ -112,6 +114,25 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
                 updateUIValues(lastLocation);
             }
         };
+
+        gpsWifiSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (gpsWifiSwitch.isChecked()) {
+                    locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                    sensorLabel.setText("High Power Usage");
+                }
+                else {
+                    locationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
+                    sensorLabel.setText("Cell Tower + Wifi (Power Saving)");
+                }
+            }
+        });
+
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        Sensor gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        Sensor magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
         // register sensors
         if (accelerometer != null) {
@@ -137,7 +158,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         magnetometerReadTime = LocalDateTime.now();
     }
 
-    /** Actions after requesting users for permission, overriding AppCompatActivity's method. */
+    /** Actions after requesting user for permission */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -151,8 +172,8 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         }
     }
 
-    /** Get permissions to track GPS,
-     * get location from fused client provider,
+    /** Check if we got permissions to track GPS,
+     * get location from fused location provider,
      * update UI. */
     private void updateGPS() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(SensorActivity.this);
@@ -162,7 +183,6 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onSuccess(Location location) {
-                    // got permissions, need to put values into UI
                     if (location != null) {
                         updateUIValues(location);
                     }

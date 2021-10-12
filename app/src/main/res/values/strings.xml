@@ -12,4 +12,39 @@
         <item>Walk</item>
         <item>Car</item>
     </string-array>
+
+    <string name="profile_picture">Profile Picture</string>
+    <string name="username">Homer Simpson</string>
+    <string name="user_bio">I love eating donuts so I should exercise more</string>
+    <string name="logged">4</string>
+    <string name="point">200</string>
+    <string name="journeys_logged">Journeys \n logged</string>
+    <string name="points_accum">Points \n accumulated</string>
+
+    <string name="basic"><u>Basic Settings</u></string>
+    <string name="advanced"><u>Advanced Settings</u></string>
+
+<!--Activity Start Fragment-->
+    <string name="Accelerometer">Accelerometer</string>
+    <string name="Gyroscope">Gyroscope</string>
+    <string name="Magno">Magno</string>
+    <string name="Latitude">Latitude</string>
+    <string name="Longitude">Longitude</string>
+    <string name="Altitude">Altitude</string>
+    <string name="Cell">Cell Tower + Wifi (Power Saving)</string>
+    <string name="FinishSession">Finish Session</string>
+<!--Fragment Help-->
+    <string name="FAQs">FAQs</string>
+    <string name="ContactSupport">Contact Support</string>
+    <string name="JoinBetaProgram">Join Beta Program</string>
+<!--Fragment Home-->
+    <string name="Welcome">Welcome</string>
+    <string name="StartTrackingYourJourneyNow">Start tracking your journey now!</string>
+    <string name="ChooseYourModeOfTransport">Choose your mode of transport: </string>
+    <string name="StartSession">Start Session</string>
+<!--    Fragment Log-->
+    <string name="JourneyLogs">Journey Logs</string>
+<!--    Nav Header -->
+    <string name="Team9AppDevelopment">Team 9 App Development</string>
+    <string name="BikeTracks">Bike Tracks</string>
 </resources>

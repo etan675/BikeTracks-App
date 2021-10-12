@@ -5,29 +5,39 @@
     android:background="@android:color/white">
 
     <TextView
+        android:id="@+id/welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Home Page"
-        android:textSize="30sp"
+        android:layout_centerHorizontal="true"
         android:paddingTop="20dp"
-        android:layout_centerHorizontal="true"/>
+        android:text="@string/Welcome"
+        android:textColor="@android:color/black"
+        android:textSize="50sp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/StartTrackingYourJourneyNow"
+        android:textSize="16dp"
+        android:paddingTop="1dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/welcome"
+        />
 
     <TextView
         android:id="@+id/transport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         android:layout_centerHorizontal="true"
-        android:paddingTop="40dp"
-        android:paddingBottom="10dp"
-        android:text="Choose mode of transport:"
-        android:textSize="17dp" />
+        android:paddingTop="160dp"
+
+        android:text="@string/ChooseYourModeOfTransport"
+        android:textSize="18dp"
+        android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/activity_spinner"
         android:layout_width="260dp"
-        android:padding="20dp"
         android:layout_marginTop="20dp"
         android:layout_below="@+id/transport"
         android:layout_height="wrap_content"
@@ -39,8 +49,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/activity_spinner"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="20dp"
         android:padding="10dp"
-        android:text="Start Session"
+        android:text="@string/StartSession"
         android:textSize="20dp" />
 </RelativeLayout>

@@ -30,13 +30,8 @@ public class HomeFragment extends Fragment {
         initspinnerfooter();
 
         //Start button
-        Button startSessionButton = (Button) rootView.findViewById(R.id.startSessionButton);
-        startSessionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), SensorActivity.class));
-            }
-        });
+        Button startSessionButton = rootView.findViewById(R.id.startSessionButton);
+        startSessionButton.setOnClickListener(view -> startActivity(new Intent(getActivity(), SensorActivity.class)));
         return rootView;
     }
 
@@ -47,7 +42,7 @@ public class HomeFragment extends Fragment {
                 "No Selection", "Bike", "E-scooter", "Run", "Walk", "Car"
         };
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
