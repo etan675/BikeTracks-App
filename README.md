@@ -19,7 +19,7 @@ To install the app directly on to your smartphone:
 
 Alternatively, to run this app through your PC: 
 1.  Download and set up [Android Studio](https://developer.android.com/studio).
-2.  Download `Source code (zip)` for Android from [releases](https://github.com/uoa-compsci399-s2-2021/Team9-BikeTracks-App-Development/releases/tag/v0.1.0), and extract it.
+2.  Download `Source code (zip)` for Android from [releases](https://github.com/uoa-compsci399-s2-2021/Team9-BikeTracks-App-Development/releases), and extract it.
 3.  In Android Studio, open `build.gradle` found in the extracted folder as an Android Studio project.
 4. There are two ways to run the app:
     - Plug your Android device in to your PC, or
