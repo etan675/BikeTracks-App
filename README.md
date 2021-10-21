@@ -3,8 +3,6 @@
 
 ## About 
 
----
-
 This project was to incentivise the use of eco-friendly methods of transport when commuting, such as bicycles and e-scooters. We created a GPS tracking app that records a user's commuting journey.
 
 A report detailing our project can be found [here](https://docs.google.com/spreadsheets/d/1bhnV-CQRMy3Z0npQd9XSoTdkYxz0ew5e648S00qkJZ8).
@@ -13,8 +11,6 @@ Our project management tool was Trello. The board can be found [here](https://tr
 
 
 ## Installing
-
----
 
 ###  - Android 
 To install the app directly on to your smartphone:
@@ -49,8 +45,6 @@ Unfortunately there is no way to directly download the app on to an iOS device, 
 
 ## Application Architecture
 
----
-
 - Android technologies:
   - Java - language for Android backend and database
   - XML - language for Android frontend
@@ -68,7 +62,6 @@ Unfortunately there is no way to directly download the app on to an iOS device, 
 
 ## Future Plans
 
----
 
 ### Within scope:
 
@@ -82,7 +75,6 @@ Unfortunately there is no way to directly download the app on to an iOS device, 
 
 ## Acknowledgements
 
----
 
 ### People
 
