@@ -15,7 +15,7 @@ Our project management tool was Trello. The board can be found [here](https://tr
 ###  - Android 
 To install the app directly on to your smartphone:
 1.  Open up this page on your phone browser. 
-2.  From [releases](https://github.com/uoa-compsci399-s2-2021/Team9-BikeTracks-App-Development/releases/tag/v0.1.0), click `BikeTracks-v0.1.0.apk` and it should automatically download on to your phone.
+2.  From [releases](https://github.com/uoa-compsci399-s2-2021/Team9-BikeTracks-App-Development/releases), click `BikeTracks-v0.1.0.apk` and it should automatically download on to your phone.
 
 Alternatively, to run this app through your PC: 
 1.  Download and set up [Android Studio](https://developer.android.com/studio).
@@ -37,7 +37,7 @@ Alternatively, to run this app through your PC:
 
 Unfortunately there is no way to directly download the app on to an iOS device, as the process for deploying a packaged app for iOS is very strict. This means we must run through a macOS device:
 1. Download and set up [Xcode](https://developer.apple.com/xcode/resources/).
-2. Download `Source code (zip)` for iOS from [releases](https://github.com/uoa-compsci399-s2-2021/Team9-BikeTracks-App-Development/releases/tag/v0.1.0), and extract it.
+2. Download `Source code (zip)` for iOS from [releases](https://github.com/uoa-compsci399-s2-2021/Team9-BikeTracks-App-Development/releases), and extract it.
 3. Open the `BikeTracks.xcodeproj` file in Xcode.
 4. Change the Signing & Capabilities Team to your Team
 5. Connect your iOS device.
