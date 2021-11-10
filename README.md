@@ -9,6 +9,12 @@ A report detailing our project can be found [here](https://docs.google.com/sprea
 
 Our project management tool was Trello. The board can be found [here](https://trello.com/b/W3KX3XdZ/capstone).
 
+Our final report can be found [here](https://docs.google.com/document/d/15r2RIgTmqzOvhRFX8bYyKclPpC7Zdu8Z/edit?usp=sharing&ouid=116661549430453667160&rtpof=true&sd=true).
+
+Our final report as a presentation can be found [here](https://docs.google.com/presentation/d/1oHXGEyzFk9dPt5eut829Y6BimSt39DO302DqcS5vmPU/edit?usp=sharing).
+
+Our poster can be found [here](https://docs.google.com/presentation/d/17tuOgRGhaFwk8EHqv6dtkAKLN-GMocgutV4dkIGqNgI/edit?usp=sharing).
+
 
 ## Installing
 
